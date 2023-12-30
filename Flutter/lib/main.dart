@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+const bgcolor = Color.fromRGBO(255, 247, 219, 1);
+const medgreen = Color.fromRGBO(144, 176, 91, 1);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -28,8 +32,13 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromRGBO(134, 177, 9, 1),
+            brightness: Brightness.light
+        ),
         useMaterial3: true,
+        scaffoldBackgroundColor: bgcolor,
+        fontFamily: GoogleFonts.jost().fontFamily
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -81,10 +90,14 @@ class _MyHomePageState extends State<MyHomePage> {
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: bgcolor,
+        centerTitle: true,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Image.asset(
+          'assets/images/lp_logo_l.png',
+          scale: 4,
+        )
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -103,8 +116,9 @@ class _MyHomePageState extends State<MyHomePage> {
           // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const SizedBox(height: 10,),
             const Text(
               'You have pushed the button this many times:',
             ),
@@ -118,8 +132,10 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        backgroundColor: medgreen,
+        child: const Icon(Icons.add, color: Colors.white, size: 30.0,)
       ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
