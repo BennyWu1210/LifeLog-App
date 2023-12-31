@@ -7,6 +7,7 @@ void main() {
 
 const bgcolor = Color.fromRGBO(255, 247, 219, 1);
 const medgreen = Color.fromRGBO(144, 176, 91, 1);
+const dark = Color.fromRGBO(62, 62, 62, 1);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -102,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
+        child: Stack(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -118,24 +119,59 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const SizedBox(height: 10,),
-            const Text(
-              'You have pushed the button this many times:',
+            Column(
+              children: <Widget>[
+                const SizedBox(height: 0,),
+                const Text(
+                  'You have pushed the button this many times:',
+                ),
+                Text(
+                  '$_counter',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+
+            Positioned(
+              bottom: 30.0,  // Adjust this value to move the buttons upwards
+              left: 0.0,
+              right: 0.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  FloatingActionButton(
+                      onPressed: _incrementCounter,
+                      tooltip: 'Decrement',
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                      child: const Icon(Icons.group, color: dark, size: 30.0,)
+                  ),
+                  const SizedBox(width: 40,),
+                  FloatingActionButton(
+                      onPressed: _incrementCounter,
+                      tooltip: 'Increment',
+                      backgroundColor: medgreen,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: const Icon(Icons.add, color: Colors.white, size: 35.0,)
+                  ),
+                  const SizedBox(width: 40,),
+                  FloatingActionButton(
+                      onPressed: _incrementCounter,
+                      tooltip: 'Reset',
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                      child: const Icon(Icons.settings, color: dark, size: 30.0,)
+                  ),
+                ],
+              ),
             ),
+
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        backgroundColor: medgreen,
-        child: const Icon(Icons.add, color: Colors.white, size: 30.0,)
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton:
     );
   }
 }
