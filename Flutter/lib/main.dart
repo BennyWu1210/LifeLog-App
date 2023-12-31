@@ -8,6 +8,19 @@ void main() {
 const bgcolor = Color.fromRGBO(255, 247, 219, 1);
 const medgreen = Color.fromRGBO(144, 176, 91, 1);
 const dark = Color.fromRGBO(62, 62, 62, 1);
+const darkgreen = Color.fromRGBO(74, 129, 18, 1);
+
+const TextStyle header = TextStyle(
+  fontWeight: FontWeight.w500,
+  fontSize: 24,
+  color: dark
+);
+
+const TextStyle submenuHeader = TextStyle(
+    fontWeight: FontWeight.w400,
+    color: darkgreen,
+    fontSize: 22
+);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -46,17 +59,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
+
+/*
+  ----------------------- Homepage ----------------------------
+ */
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -80,21 +89,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: bgcolor,
         centerTitle: true,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Image.asset(
           'assets/images/lp_logo_l.png',
           scale: 4,
@@ -104,20 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Stack(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Column(
               children: <Widget>[
@@ -141,14 +125,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   FloatingActionButton(
                       onPressed: _incrementCounter,
-                      tooltip: 'Decrement',
+                      tooltip: 'Friends',
                       elevation: 0,
                       backgroundColor: Colors.transparent,
                       child: const Icon(Icons.group, color: dark, size: 30.0,)
                   ),
                   const SizedBox(width: 40,),
                   FloatingActionButton(
-                      onPressed: _incrementCounter,
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CreatePostPage()),
+                        );
+                      },
                       tooltip: 'Increment',
                       backgroundColor: medgreen,
                       shape: RoundedRectangleBorder(
@@ -159,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(width: 40,),
                   FloatingActionButton(
                       onPressed: _incrementCounter,
-                      tooltip: 'Reset',
+                      tooltip: 'Settings',
                       elevation: 0,
                       backgroundColor: Colors.transparent,
                       child: const Icon(Icons.settings, color: dark, size: 30.0,)
@@ -167,7 +156,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-
           ],
         ),
       ),
@@ -175,3 +163,60 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
+/*
+  ----------------------- Post Page ----------------------------
+ */
+
+class CreatePostPage extends StatefulWidget {
+  const CreatePostPage({Key? key}) : super(key: key);
+
+  @override
+  State<CreatePostPage> createState() => _CreatePostPageState();
+}
+
+class _CreatePostPageState extends State<CreatePostPage> {
+
+  // final journalTitleController = TextEditingController();
+  // final journalTextController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'New Journal',
+          style: header
+        ),
+        backgroundColor: bgcolor,
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            TextFormField(
+              decoration: const InputDecoration(
+                  labelText: "Journal Title",
+                  border: InputBorder.none,
+              ),
+              style: submenuHeader,
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.pop(context); // placeholder
+        },
+        tooltip: "Post",
+        backgroundColor: medgreen,
+          child: const Icon(Icons.send, color: Colors.white, size: 26.0,)
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+}
+
