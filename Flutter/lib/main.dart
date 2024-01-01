@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'journal.dart';
+import 'style.dart';
 
 void main() {
   runApp(const MyApp());
 }
-
-const bgcolor = Color.fromRGBO(255, 247, 219, 1);
-const medgreen = Color.fromRGBO(144, 176, 91, 1);
-const dark = Color.fromRGBO(62, 62, 62, 1);
-const darkgreen = Color.fromRGBO(74, 129, 18, 1);
-
-const TextStyle header = TextStyle(
-  fontWeight: FontWeight.w500,
-  fontSize: 24,
-  color: dark
-);
-
-const TextStyle submenuHeader = TextStyle(
-    fontWeight: FontWeight.w400,
-    color: darkgreen,
-    fontSize: 22
-);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -103,19 +88,33 @@ class _MyHomePageState extends State<MyHomePage> {
         // in the middle of the parent.
         child: Stack(
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                const SizedBox(height: 0,),
-                const Text(
-                  'You have pushed the button this many times:',
-                ),
-                Text(
-                  '$_counter',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 10,),
+                  ListView.builder(
+                    itemCount: journalList.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          title: Text(journalList[index].title),
+                          subtitle: Text(journalList[index].content),
+                          onTap: () {
+                            // Navigate to the journal entry page
+                          },
+                        ),
+                      );
+                    },
+                  )
+                ],
+              ),
             ),
 
+
+            /*
+            The bottom navbar consisting of three FABs in a row
+             */
             Positioned(
               bottom: 30.0,  // Adjust this value to move the buttons upwards
               left: 0.0,
@@ -193,16 +192,39 @@ class _CreatePostPageState extends State<CreatePostPage> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            TextFormField(
-              decoration: const InputDecoration(
-                  labelText: "Journal Title",
-                  border: InputBorder.none,
+            Padding(
+              padding: const EdgeInsets.only(left: 12),
+              child: TextFormField(
+                decoration: const InputDecoration(
+                    labelText: "Journal Title",
+                    border: InputBorder.none,
+                    hintText: "What's going on in your life?",
+                    hintStyle: hintText,
+                    labelStyle: submenuHeader
+                ),
+                style: submenuHeader,
               ),
-              style: submenuHeader,
+            ),
+
+            Container(
+              decoration: BoxDecoration(
+                color: lightgreen,
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              padding: const EdgeInsets.only(left: 20, top: 0, right: 20, bottom: 60),
+              child: TextFormField(
+                decoration: const InputDecoration(
+                  labelText: "How's it going?",
+                  border: InputBorder.none,
+                  labelStyle: hintText
+                ),
+                style: bodyText,
+                maxLines: null,
+              ),
             )
           ],
         ),
