@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+List<String> a = ['a', 'b', 'c'];
 
 /*
   ----------------------- Homepage ----------------------------
@@ -59,18 +60,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,23 +78,36 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Stack(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 25),
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   ListView.builder(
                     itemCount: journalList.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: ListTile(
-                          title: Text(journalList[index].title),
-                          subtitle: Text(journalList[index].content),
-                          onTap: () {
-                            // Navigate to the journal entry page
-                          },
+                    itemBuilder: (BuildContext context, int index){
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 0),
+                        child: Card(
+                          color: medgreen,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 0),
+                            child: ListTile(
+                              title: Text(journalList[index].title, style: whiteSubmenuHeader),
+                              subtitle: Text(
+                                journalList[index].content,
+                                style: const TextStyle(color: Colors.white, fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
+                              onTap: () {
+                                // Navigate to the journal entry page
+                              },
+                            ),
+                          ),
                         ),
                       );
                     },
+                    shrinkWrap: true,
                   )
                 ],
               ),
@@ -123,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   FloatingActionButton(
-                      onPressed: _incrementCounter,
+                      onPressed: null,
                       tooltip: 'Friends',
                       elevation: 0,
                       backgroundColor: Colors.transparent,
@@ -146,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   const SizedBox(width: 40,),
                   FloatingActionButton(
-                      onPressed: _incrementCounter,
+                      onPressed: null,
                       tooltip: 'Settings',
                       elevation: 0,
                       backgroundColor: Colors.transparent,
