@@ -121,63 +121,53 @@ class _MyHomePageState extends State<MyHomePage> {
           /*
             The bottom navbar consisting of three FABs in a row
              */
-          Positioned(
-            bottom: 30.0, // Adjust this value to move the buttons upwards
-            left: 0.0,
-            right: 0.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const FloatingActionButton(
-                    onPressed: null,
-                    tooltip: 'Friends',
-                    elevation: 0,
-                    backgroundColor: Colors.transparent,
-                    child: Icon(
-                      Icons.group,
-                      color: dark,
-                      size: 30.0,
-                    )),
-                const SizedBox(
-                  width: 40,
-                ),
-                FloatingActionButton(
-                    onPressed: () {
-                      Navigator.push(
+            Positioned(
+              bottom: 30.0,  // Adjust this value to move the buttons upwards
+              left: 0.0,
+              right: 0.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const FloatingActionButton(
+                      onPressed: null,
+                      tooltip: 'Friends',
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                      heroTag: "navbarL",
+                      child: Icon(Icons.group, color: dark, size: 30.0,)
+                  ),
+                  const SizedBox(width: 40,),
+                  FloatingActionButton(
+                      onPressed: (){
+                        Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => CreatePostPage(
-                                  addJournalCallback: addJournal)));
-                    },
-                    tooltip: 'Increment',
-                    backgroundColor: medgreen,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 35.0,
-                    )),
-                const SizedBox(
-                  width: 40,
-                ),
-                const FloatingActionButton(
-                    onPressed: null,
-                    tooltip: 'Settings',
-                    elevation: 0,
-                    backgroundColor: Colors.transparent,
-                    child: Icon(
-                      Icons.settings,
-                      color: dark,
-                      size: 30.0,
-                    )),
-              ],
+                          MaterialPageRoute(builder: (context) => CreatePostPage(addJournalCallback: addJournal))
+                        );
+                      },
+                      tooltip: 'Increment',
+                      backgroundColor: medgreen,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      heroTag: "navbarM",
+                      child: const Icon(Icons.add, color: Colors.white, size: 35.0,)
+                  ),
+                  const SizedBox(width: 40,),
+                  const FloatingActionButton(
+                      onPressed: null,
+                      tooltip: 'Settings',
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
+                      heroTag: "navbarR",
+                      child: Icon(Icons.settings, color: dark, size: 30.0,)
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-    // floatingActionButton:
+          ],
+        ),
+      );
+      // floatingActionButton:
   }
 }
 
