@@ -87,8 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         fontWeight: FontWeight.w900)),
                             subtitle: Text(
                               journalList[index].content,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 14),
+                              style: Theme.of(context).textTheme.bodySmall,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),

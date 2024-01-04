@@ -27,7 +27,8 @@ ThemeData lightTheme = ThemeData(
         labelMedium: TextStyle(
             fontWeight: FontWeight.w400, color: Colors.black26, fontSize: 14),
         bodyMedium:
-            TextStyle(fontWeight: FontWeight.w400, color: dark, fontSize: 16)),
+            TextStyle(fontWeight: FontWeight.w400, color: dark, fontSize: 16),
+        bodySmall: TextStyle(color: Colors.white, fontSize: 13)),
     useMaterial3: true,
     scaffoldBackgroundColor: bgcolor,
     fontFamily: GoogleFonts.jost().fontFamily);
