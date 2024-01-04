@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:journal_app/pages/journal.dart';
 
 // Custom files
 import '../utilities/journal.dart';
@@ -83,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     .headlineSmall
                                     ?.copyWith(
                                         color: Colors.white,
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w900)),
                             subtitle: Text(
                               journalList[index].content,
@@ -92,7 +93,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               maxLines: 2,
                             ),
                             onTap: () {
-                              // Navigate to the journal entry page
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => JournalPage(journal: journalList[index])
+                                )
+                              );
                             },
                           ),
                         ),
@@ -112,13 +116,10 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const FloatingActionButton(
+                const IconButton(
                     onPressed: null,
                     tooltip: 'Friends',
-                    elevation: 0,
-                    backgroundColor: Colors.transparent,
-                    heroTag: "navbarL",
-                    child: Icon(
+                    icon: Icon(
                       Icons.group,
                       color: dark,
                       size: 30.0,
@@ -147,13 +148,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   width: 40,
                 ),
-                const FloatingActionButton(
+                const IconButton(
                     onPressed: null,
                     tooltip: 'Settings',
-                    elevation: 0,
-                    backgroundColor: Colors.transparent,
-                    heroTag: "navbarR",
-                    child: Icon(
+                    icon: Icon(
                       Icons.settings,
                       color: dark,
                       size: 30.0,
