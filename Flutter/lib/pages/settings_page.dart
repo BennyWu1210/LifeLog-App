@@ -109,16 +109,17 @@ class SettingsItem extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(25, 5, 0, 0),
-      alignment: Alignment.centerLeft,
-      child: GestureDetector(
+    return GestureDetector(
+        onTap: () =>
+            Navigator.push(context, MaterialPageRoute(builder: builder)),
+        child: Container(
+          color: poopoo,
+          padding: const EdgeInsets.fromLTRB(25, 5, 0, 0),
+          alignment: Alignment.centerLeft,
           child: Text(
             title,
             style: TextStyle(fontWeight: bolded ? FontWeight.bold : null),
           ),
-          onTap: () =>
-              Navigator.push(context, MaterialPageRoute(builder: builder))),
-    );
+        ));
   }
 }
