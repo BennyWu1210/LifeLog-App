@@ -72,6 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           vertical: 3, horizontal: 0),
                       child: Card(
                         color: medgreen,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(6, 6, 0, 6),
                           child: ListTile(
@@ -79,7 +81,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineSmall
-                                    ?.copyWith(color: Colors.white)),
+                                    ?.copyWith(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w900)),
                             subtitle: Text(
                               journalList[index].content,
                               style: const TextStyle(
