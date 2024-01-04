@@ -134,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       tooltip: 'Friends',
                       elevation: 0,
                       backgroundColor: Colors.transparent,
+                      heroTag: "navbarL",
                       child: Icon(Icons.group, color: dark, size: 30.0,)
                   ),
                   const SizedBox(width: 40,),
@@ -149,6 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)
                       ),
+                      heroTag: "navbarM",
                       child: const Icon(Icons.add, color: Colors.white, size: 35.0,)
                   ),
                   const SizedBox(width: 40,),
@@ -157,6 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       tooltip: 'Settings',
                       elevation: 0,
                       backgroundColor: Colors.transparent,
+                      heroTag: "navbarR",
                       child: Icon(Icons.settings, color: dark, size: 30.0,)
                   ),
                 ],
