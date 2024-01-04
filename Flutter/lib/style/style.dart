@@ -7,6 +7,7 @@ const medgreen = Color.fromRGBO(134, 177, 91, 1);
 const dark = Color.fromRGBO(62, 62, 62, 1);
 const darkgreen = Color.fromRGBO(74, 129, 18, 1);
 const lightgreen = Color.fromRGBO(210, 224, 196, 1);
+const poopoo = Color.fromRGBO(230, 216, 165, 1);
 
 // header => headlineMedium
 // submenuHeader => headlineSmall

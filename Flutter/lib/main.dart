@@ -11,6 +11,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // TODO: this should store a user instance, which is passed to the home page. Display login page conditionally based on user information.
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

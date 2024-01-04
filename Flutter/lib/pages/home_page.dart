@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:journal_app/pages/journal.dart';
+import 'package:journal_app/pages/settings_page.dart';
 
 // Custom files
 import '../utilities/journal.dart';
 import '../style/style.dart';
 import 'journal_page.dart';
+import '../pages/settings_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -93,10 +95,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               maxLines: 2,
                             ),
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => JournalPage(journal: journalList[index])
-                                )
-                              );
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => JournalPage(
+                                          journal: journalList[index])));
+                                          
                             },
                           ),
                         ),
@@ -148,10 +152,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   width: 40,
                 ),
-                const IconButton(
-                    onPressed: null,
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const SettingsPage()));
+                    },
                     tooltip: 'Settings',
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.settings,
                       color: dark,
                       size: 30.0,
