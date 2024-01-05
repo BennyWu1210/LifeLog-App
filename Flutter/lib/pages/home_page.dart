@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:journal_app/pages/journal.dart';
 import 'package:journal_app/pages/settings_page.dart';
+import 'package:intl/intl.dart';
+
 
 // Custom files
 import '../utilities/journal_template.dart';
@@ -112,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w900)),
                                   subtitle: Text(
-                                    journalList[index].content,
+                                    "${DateFormat("MMMM dd, yyyy").format(journalList[index].time)}  |  ${journalList[index].content}",
                                     style: Theme.of(context).textTheme.bodySmall,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
