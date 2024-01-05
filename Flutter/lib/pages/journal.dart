@@ -23,7 +23,7 @@ class _JournalPageState extends State<JournalPage> {
           padding: const EdgeInsets.only(top: 5),
           child: Text(
             widget.journal.title,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 24),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 24, fontWeight: FontWeight.w400),
           ),
         ),
         backgroundColor: bgcolor,
