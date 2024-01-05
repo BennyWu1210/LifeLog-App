@@ -15,6 +15,28 @@ class _CreatePostPageState extends State<CreatePostPage> {
   final journalTitleController = TextEditingController();
   final journalTextController = TextEditingController();
 
+
+  /*
+  This popup shows when the user leaves the title or content blank
+   */
+  Widget popup(BuildContext context){
+    return AlertDialog(
+      title: Text(
+        "Please do not leave the title or the content body blank",
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+      actions: [
+        TextButton(
+            onPressed: Navigator.of(context).pop,
+            child: const Text(
+              "Close"
+            )
+        )
+      ],
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,14 +93,25 @@ class _CreatePostPageState extends State<CreatePostPage> {
             /*
           Post journal
            */
-            widget.addJournalCallback(Journal(
-                title: journalTitleController.text,
-                content: journalTextController.text,
-                time: DateTime.now()
-            ));
-            journalTextController.clear();
-            journalTitleController.clear();
-            Navigator.pop(context);
+            print(journalTextController.text);
+            print(journalTitleController.text);
+            if (journalTitleController.text != "" && journalTextController.text != "") {
+              widget.addJournalCallback(Journal(
+                  title: journalTitleController.text,
+                  content: journalTextController.text,
+                  time: DateTime.now()
+              ));
+              journalTextController.clear();
+              journalTitleController.clear();
+              Navigator.pop(context);
+            }
+            else{
+              // print("nuh uh");
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => popup(context)
+              );
+            }
           },
           tooltip: "Post",
           backgroundColor: medgreen,
