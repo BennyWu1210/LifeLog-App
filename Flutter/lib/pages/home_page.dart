@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:journal_app/pages/journal.dart';
 import 'package:journal_app/pages/settings_page.dart';
 
 // Custom files
-import '../utilities/journal.dart';
+import '../utilities/journal_template.dart';
 import '../style/style.dart';
 import 'journal_page.dart';
 import '../pages/settings_page.dart';
@@ -34,17 +35,29 @@ class _MyHomePageState extends State<MyHomePage> {
             "when an unknown printer took a galley of type and scrambled it to make a type specimen book. "
             "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. "
             "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, "
-            "and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."),
-    Journal(title: "Benny Orz", content: "je suis un vegetable"),
+            "and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        time: DateTime.utc(2023)),
+    Journal(title: "Benny Orz", content: "je suis un vegetable", time: DateTime.utc(2023)),
     Journal(
         title: "Dalao nb",
         content:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry.text ever since the 1500s"),
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry.text ever since the 1500s",
+        time: DateTime.utc(2024)),
   ];
+
+  late List<bool> journalDropdown = List<bool>.generate(journalList.length, (index) => false);
 
   void addJournal(Journal j) {
     setState(() {
       journalList.add(j);
+      journalDropdown.add(false);
+    });
+  }
+
+  void deleteJournal(int idx){
+    setState(() {
+      journalList.removeAt(idx);
+      journalDropdown.removeAt(idx);
     });
   }
 
@@ -73,38 +86,77 @@ class _MyHomePageState extends State<MyHomePage> {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 3, horizontal: 0),
-                      child: Card(
-                        color: medgreen,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(6, 6, 0, 6),
-                          child: ListTile(
-                            title: Text(journalList[index].title,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall
-                                    ?.copyWith(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w900)),
-                            subtitle: Text(
-                              journalList[index].content,
-                              style: Theme.of(context).textTheme.bodySmall,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
+                      child: GestureDetector(
+                        onLongPress: (){
+                          setState(() {
+                            journalDropdown[index] = !journalDropdown[index];
+                          });
+                          HapticFeedback.heavyImpact(); // TODO: This does not work on Huawei phone
+                        },
+                        child: Column(
+                          children: [
+
+                            Card(
+                              color: medgreen,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(6, 6, 0, 6),
+                                child: ListTile(
+                                  title: Text(journalList[index].title,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall
+                                          ?.copyWith(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w900)),
+                                  subtitle: Text(
+                                    journalList[index].content,
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (context) => JournalPage(journal: journalList[index])
+                                    )
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => JournalPage(
-                                          journal: journalList[index])));
-                                          
-                            },
-                          ),
-                        ),
-                      ),
+
+                          // Dropdown menu when long pressed
+                          // TODO: This animation may cause overflow, needs improvement
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 60), // Adjust duration as needed
+                            height: journalDropdown[index] ? 60.0 : 0.0, // Adjust height as needed
+                            child:
+                            journalDropdown[index]? Column(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    deleteJournal(index);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red
+                                  ),
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(Icons.delete, color: Colors.white,),
+                                      SizedBox(width: 10.0), // Add some spacing between the logo and the text
+                                      Text('Delete', style: TextStyle(color: Colors.white, fontSize: 15),),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ) : const SizedBox()
+                          )
+                          ],
+                        )
+                      )
                     );
                   },
                 ),

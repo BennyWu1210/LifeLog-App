@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utilities/journal.dart';
+import '../utilities/journal_template.dart';
 import '../style/style.dart';
 
 class JournalPage extends StatefulWidget {

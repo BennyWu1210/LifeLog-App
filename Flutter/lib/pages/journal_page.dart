@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utilities/journal.dart';
+import '../utilities/journal_template.dart';
 import '../style/style.dart';
 
 class CreatePostPage extends StatefulWidget {
@@ -73,7 +73,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
            */
             widget.addJournalCallback(Journal(
                 title: journalTitleController.text,
-                content: journalTextController.text));
+                content: journalTextController.text,
+                time: DateTime.now()
+            ));
             journalTextController.clear();
             journalTitleController.clear();
             Navigator.pop(context);
