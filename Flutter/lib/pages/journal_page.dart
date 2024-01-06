@@ -4,6 +4,7 @@ import '../style/style.dart';
 
 class CreatePostPage extends StatefulWidget {
   final Function(Journal) addJournalCallback;
+
   const CreatePostPage({Key? key, required this.addJournalCallback})
       : super(key: key);
 
@@ -15,11 +16,10 @@ class _CreatePostPageState extends State<CreatePostPage> {
   final journalTitleController = TextEditingController();
   final journalTextController = TextEditingController();
 
-
   /*
   This popup shows when the user leaves the title or content blank
    */
-  Widget popup(BuildContext context){
+  Widget popup(BuildContext context) {
     return AlertDialog(
       title: Text(
         "Please do not leave the title or the content body blank",
@@ -27,15 +27,10 @@ class _CreatePostPageState extends State<CreatePostPage> {
       ),
       actions: [
         TextButton(
-            onPressed: Navigator.of(context).pop,
-            child: const Text(
-              "Close"
-            )
-        )
+            onPressed: Navigator.of(context).pop, child: const Text("Close"))
       ],
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -93,22 +88,20 @@ class _CreatePostPageState extends State<CreatePostPage> {
             /*
           Post journal
            */
-            if (journalTitleController.text != "" && journalTextController.text != "") {
+            if (journalTitleController.text != "" &&
+                journalTextController.text != "") {
               widget.addJournalCallback(Journal(
                   title: journalTitleController.text,
                   content: journalTextController.text,
-                  time: DateTime.now()
-              ));
+                  time: DateTime.now()));
               journalTextController.clear();
               journalTitleController.clear();
               Navigator.pop(context);
-            }
-            else{
+            } else {
               // print("nuh uh");
               showDialog(
                   context: context,
-                  builder: (BuildContext context) => popup(context)
-              );
+                  builder: (BuildContext context) => popup(context));
             }
           },
           tooltip: "Post",

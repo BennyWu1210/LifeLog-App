@@ -46,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   late List<bool> journalDropdown = List<bool>.generate(journalList.length, (index) => false);
 
+
   void addJournal(Journal j) {
     setState(() {
       journalList.add(j);
@@ -84,7 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   future: readJournals(),
                   builder: (BuildContext context, AsyncSnapshot<List<Journal>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting){
-                      return const LinearProgressIndicator();
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height - 60,
+                          child: const LinearProgressIndicator()
+                      );
                     }
                     else{
                       print("------------------- LISTVIEW LOAD ----------------------");
@@ -105,7 +109,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                   },
                                   child: Column(
                                     children: [
-
                                       Card(
                                         color: medgreen,
                                         shape: RoundedRectangleBorder(
