@@ -93,8 +93,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
             /*
           Post journal
            */
-            print(journalTextController.text);
-            print(journalTitleController.text);
             if (journalTitleController.text != "" && journalTextController.text != "") {
               widget.addJournalCallback(Journal(
                   title: journalTitleController.text,
