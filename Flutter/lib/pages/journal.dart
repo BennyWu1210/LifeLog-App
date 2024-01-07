@@ -3,17 +3,9 @@ import '../utilities/journal_template.dart';
 import '../style/style.dart';
 import 'package:intl/intl.dart';
 
-
-class JournalPage extends StatefulWidget {
+class JournalPage extends StatelessWidget {
   final Journal journal;
-  JournalPage({Key? key, required this.journal})
-      : super(key: key);
-
-  @override
-  State<JournalPage> createState() => _JournalPageState();
-}
-
-class _JournalPageState extends State<JournalPage> {
+  JournalPage({Key? key, required this.journal}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +14,11 @@ class _JournalPageState extends State<JournalPage> {
         title: Padding(
           padding: const EdgeInsets.only(top: 5),
           child: Text(
-            widget.journal.title,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 24, fontWeight: FontWeight.w400),
+            journal.title,
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(fontSize: 24, fontWeight: FontWeight.w400),
           ),
         ),
         backgroundColor: bgcolor,
@@ -31,7 +26,7 @@ class _JournalPageState extends State<JournalPage> {
         bottom: PreferredSize(
           preferredSize: Size.zero,
           child: Text(
-            DateFormat("MMMM dd, yyyy").format(widget.journal.time),
+            DateFormat("MMMM dd, yyyy").format(journal.time),
             style: Theme.of(context).textTheme.labelMedium,
           ),
         ),
@@ -39,10 +34,13 @@ class _JournalPageState extends State<JournalPage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 35),
         child: Column(
-          children: <Widget> [
+          children: <Widget>[
             Text(
-                widget.journal.content,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(color: dark),
+              journal.content,
+              style: Theme.of(context)
+                  .textTheme
+                  .labelMedium
+                  ?.copyWith(color: dark),
             )
           ],
         ),
