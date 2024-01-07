@@ -1,5 +1,5 @@
 
-class Journal{
+class Journal {
   final String title;
   final String content;
   final DateTime time;
