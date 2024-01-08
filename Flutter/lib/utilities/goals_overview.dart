@@ -4,16 +4,14 @@ import '../utilities/goal_template.dart';
 import '../style/style.dart';
 
 Widget progressBar(ProgressGoal goal) {
-  return Flexible(
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(160, 11, 40, 0),
-      child: LinearProgressIndicator(
-        minHeight: 5,
-        borderRadius: BorderRadius.circular(100),
-        color: darkgreen,
-        backgroundColor: Colors.white.withOpacity(0.85),
-        value: goal.current.toDouble() / goal.total,
-      ),
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(160, 11, 40, 0),
+    child: LinearProgressIndicator(
+      minHeight: 5,
+      borderRadius: BorderRadius.circular(100),
+      color: darkgreen,
+      backgroundColor: Colors.white.withOpacity(0.85),
+      value: goal.current.toDouble() / goal.total,
     ),
   );
 }
