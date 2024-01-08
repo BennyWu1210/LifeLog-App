@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:journal_app/style/style.dart';
+import 'package:journal_app/utilities/input.dart';
 
 class ProfilePicturePage extends StatelessWidget {
   const ProfilePicturePage({Key? key}) : super(key: key);
@@ -14,7 +15,16 @@ class ProfilePicturePage extends StatelessWidget {
           ),
           backgroundColor: bgcolor,
         ),
-        body: Text("Change Profile Picture"));
+        body: Container(
+            padding: EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Please upload new picture"),
+                SizedBox(height: 10),
+                addButton(() => {})
+              ],
+            )));
   }
 }
 
@@ -31,7 +41,18 @@ class PasswordPage extends StatelessWidget {
           ),
           backgroundColor: bgcolor,
         ),
-        body: Text("Change Password"));
+        body: Container(
+            padding: EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Please input new password"),
+                SizedBox(height: 5),
+                InputField(hint: "Your username"),
+                SizedBox(height: 20),
+                CoolButton(handler: () => {}, text: "Update")
+              ],
+            )));
   }
 }
 
@@ -48,7 +69,7 @@ class FriendsListPage extends StatelessWidget {
           ),
           backgroundColor: bgcolor,
         ),
-        body: Text("View friends"));
+        body: Text("Anime girls"));
   }
 }
 

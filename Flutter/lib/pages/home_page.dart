@@ -6,6 +6,7 @@ import 'package:journal_app/pages/journal.dart';
 import 'package:intl/intl.dart';
 import 'package:journal_app/utilities/goal_template.dart';
 import 'package:journal_app/utilities/goals_overview.dart';
+import 'package:journal_app/utilities/input.dart';
 
 // Custom files
 import '../utilities/journal_template.dart';
@@ -31,9 +32,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Journal> journalList = [];
   List<Goal> goalList = [
+    TodoGoal(title: "Say Hi to Friends", state: false),
     ProgressGoal(title: "Go to lecture", current: 12, total: 30),
     ProgressGoal(title: "Exercise", current: 8, total: 10),
-    TodoGoal(title: "Say Hi to Friends", state: false)
+    TodoGoal(title: "Start juanning", state: true, completed: true),
+    ProgressGoal(title: "Haidilao", current: 15, total: 15, completed: true),
   ];
 
   void loadJournals() async {
@@ -60,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void toggleGoal(TodoGoal g) {
     setState(() {
       g.state = !g.state;
+      g.completed = g.state;
     });
   }
 
@@ -265,24 +269,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   width: 40,
                 ),
-                FloatingActionButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CreatePostPage(
-                                  addJournalCallback: addJournal)));
-                    },
-                    tooltip: 'Increment',
-                    backgroundColor: medgreen,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    heroTag: "navbarM",
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 35.0,
-                    )),
+                addButton(
+                    () => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CreatePostPage(
+                                      addJournalCallback: addJournal)))
+                        }),
                 const SizedBox(
                   width: 40,
                 ),
