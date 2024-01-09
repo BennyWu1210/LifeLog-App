@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Custom files
 import 'style/style.dart';
 import 'pages/home_page.dart';
+import 'app.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: lightTheme,
-      home: const MyHomePage(),
+      home: const App(),
     );
   }
 }

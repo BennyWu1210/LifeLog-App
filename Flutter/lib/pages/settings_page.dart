@@ -2,14 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:journal_app/pages/settings_subpages.dart';
 import 'package:journal_app/style/style.dart';
 
+import '../utilities/user_data.dart';
+
 class SettingsPage extends StatelessWidget {
+
+  User user;
+  final Function updateUser;
+
   // This should take in a user instance
-  final String username = "Benny_Wu123";
+  //String username = "Benny_Wu123";
+
   final String image_url = "assets/images/sample_profile.jpg";
-  const SettingsPage({super.key});
+
+  SettingsPage({super.key, required this.user, required this.updateUser});
 
   @override
   Widget build(context) {
+
+    String username = user.username;  // TODO TOMORROW: implement password change
+    print("settings page: $user");
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -57,7 +69,7 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Change Password",
                         bolded: false,
-                        builder: (context) => const PasswordPage()),
+                        builder: (context) => PasswordPage(user: user, updateUser: updateUser,)),
                     const Divider(
                       thickness: 1,
                       indent: 25,
@@ -84,7 +96,7 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Log Out",
                         bolded: true,
-                        builder: (context) => const SettingsPage()),
+                        builder: (context) => SettingsPage(user: user, updateUser: updateUser,)),
                     const SizedBox(
                       height: 15,
                     )

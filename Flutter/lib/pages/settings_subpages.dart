@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:journal_app/style/style.dart';
 import 'package:journal_app/utilities/input.dart';
 
+import '../utilities/user_data.dart';
+
 class ProfilePicturePage extends StatelessWidget {
   const ProfilePicturePage({Key? key}) : super(key: key);
 
@@ -29,10 +31,16 @@ class ProfilePicturePage extends StatelessWidget {
 }
 
 class PasswordPage extends StatelessWidget {
-  const PasswordPage({Key? key}) : super(key: key);
+
+  User user;
+  final passwordController = TextEditingController();
+  final Function updateUser;
+
+  PasswordPage({Key? key, required this.user, required this.updateUser}) : super(key: key);
 
   @override
   Widget build(context) {
+    User newUser;
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -48,9 +56,20 @@ class PasswordPage extends StatelessWidget {
               children: [
                 Text("Please input new password"),
                 SizedBox(height: 5),
-                InputField(hint: "Your username"),
+                TextFormField(
+                  obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: "Your Password"
+                    ),
+                  controller: passwordController,
+
+                ),
                 SizedBox(height: 20),
-                CoolButton(handler: () => {}, text: "Update")
+                CoolButton(handler: (){
+                  newUser = User(user.username, passwordController.text);
+                  updateUser(newUser);
+                  Navigator.pop(context);
+                }, text: "Update")
               ],
             )));
   }

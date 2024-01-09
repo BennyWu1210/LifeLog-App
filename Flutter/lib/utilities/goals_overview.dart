@@ -19,7 +19,7 @@ Widget progressBar(ProgressGoal goal) {
 Widget todoBox(TodoGoal goal, Function(TodoGoal) toggleGoal) {
   // very inefficient but whatever
   return Padding(
-    padding: const EdgeInsets.fromLTRB(270, 0, 20, 0),
+    padding: const EdgeInsets.fromLTRB(220, 0, 20, 0), // TODO: Make padding adaptive
     child: Checkbox(
       side: BorderSide.none,
       value: goal.state,

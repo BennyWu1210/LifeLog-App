@@ -11,12 +11,21 @@ import 'package:journal_app/utilities/input.dart';
 // Custom files
 import '../utilities/journal_template.dart';
 import '../style/style.dart';
+import '../utilities/user_data.dart';
 import 'journal_page.dart';
 import '../utilities/local_storage.dart';
 import '../pages/settings_page.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+
+  final User user;
+  final Function(User) updateUser;
+
+  const MyHomePage({
+    super.key,
+    required this.user,
+    required this.updateUser
+      });
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -91,6 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("homepage: " + widget.user.toString());
     return Scaffold(
       appBar: AppBar(
           backgroundColor: bgcolor,
@@ -282,7 +292,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SettingsPage()));
+                              builder: (context) => SettingsPage(
+                                  user: widget.user,
+                                  updateUser: widget.updateUser)));
                     },
                     tooltip: 'Settings',
                     icon: const Icon(
