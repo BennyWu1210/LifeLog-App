@@ -2,14 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:journal_app/pages/settings_subpages.dart';
 import 'package:journal_app/style/style.dart';
 
+import '../utilities/user_data.dart';
+
 class SettingsPage extends StatelessWidget {
+
+  User user;
+  final Function(User) updateUser;
+
   // This should take in a user instance
-  final String username = "Benny_Wu123";
+  //String username = "Benny_Wu123";
+
   final String image_url = "assets/images/sample_profile.jpg";
-  const SettingsPage({super.key});
+
+  SettingsPage({super.key, required this.user, required this.updateUser});
 
   @override
   Widget build(context) {
+
+    print("settings page: $user");
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -24,12 +35,13 @@ class SettingsPage extends StatelessWidget {
           child: Column(children: [
             ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.asset(image_url, width: 90)),
+                child: Image(image: user.profilePicture, width: 90,)
+            ),
             const SizedBox(
               height: 15,
             ),
             Text(
-              username,
+              user.username,
               style: Theme.of(context)
                   .textTheme
                   .headlineMedium!
@@ -48,7 +60,16 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Change Profile Picture",
                         bolded: false,
-                        builder: (context) => const ProfilePicturePage()),
+                        builder: (context) => ProfilePicturePage(user: user, updateUser: updateUser,)),
+                    const Divider(
+                      thickness: 1,
+                      indent: 25,
+                      color: Color.fromRGBO(20, 20, 20, 0.1),
+                    ),
+                    SettingsItem(
+                        title: "Change Username",
+                        bolded: false,
+                        builder: (context) => UsernamePage(user: user, updateUser: updateUser,)),
                     const Divider(
                       thickness: 1,
                       indent: 25,
@@ -57,7 +78,7 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Change Password",
                         bolded: false,
-                        builder: (context) => const PasswordPage()),
+                        builder: (context) => PasswordPage(user: user, updateUser: updateUser,)),
                     const Divider(
                       thickness: 1,
                       indent: 25,
@@ -84,12 +105,15 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Log Out",
                         bolded: true,
-                        builder: (context) => const SettingsPage()),
+                        builder: (context) => SettingsPage(user: user, updateUser: updateUser,)),
                     const SizedBox(
                       height: 15,
                     )
                   ]),
                 )),
+            Text(user.hash()),
+            SizedBox(height: 20,),
+            // Text(user.profilePicturePath!) // Null value ??????????????????
           ]),
         ));
   }
