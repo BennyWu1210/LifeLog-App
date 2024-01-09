@@ -64,7 +64,7 @@ Future<File> writeUser(User u) async{
   return file.writeAsString(jsonEncode(u.toJson()));
 }
 
-Future<User> readUser() async { // ERROR HERE!
+Future<User> readUser() async {
   try {
     final file = await _localUserFile;
 
@@ -73,6 +73,8 @@ Future<User> readUser() async { // ERROR HERE!
 
     // Decode the string to a list of maps
     final data = jsonDecode(contents);
+    print("------------------ readUser: -------------------");
+    print(data);
     return User.fromJson(data);
 
   } catch (e) {

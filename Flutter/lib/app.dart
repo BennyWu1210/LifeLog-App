@@ -14,10 +14,10 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
 
   // App variables
-  late User user = User.empty(); // use empty user while the real user loads
+  late Future<User> futureUser; // use empty user while the real user loads
 
   void loadUser() async {
-    user = await readUser();
+    futureUser = readUser();
   }
 
   @override
@@ -26,16 +26,15 @@ class _AppState extends State<App> {
     loadUser();
     print("----------- init user ----------------");
 
-    // TODO: BELOW IS TEMP CODE BEFORE THE IMPLEMENTATION OF AUTH
-    User placeholder = User("Coolestbenny", "123456");
-    // updateUserInfo(placeholder); // Run this first to apply data to the local file, then you can comment it out
-    print("apppage:  " + user.toString());
+    print("apppage:  " + futureUser.toString());
   }
 
-  void updateUserInfo(User u){
+  Future<void> updateUserInfo(User u) async {
+    User user = await futureUser;
+    user = u;
     setState(() {
-      user = u;
       writeUser(u);
+      futureUser = Future.value(user);
     });
     print("- updated user info");
     print(user);
@@ -43,7 +42,19 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MyHomePage(updateUser: updateUserInfo, user: user,);
+    return FutureBuilder<User>
+      (
+        future: futureUser,
+        builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            // The Future is resolved
+            return MyHomePage(updateUser: updateUserInfo, user: snapshot.data!);
+          } else {
+            // The Future is still running
+            return const CircularProgressIndicator(); // Show a loading spinner
+          }
+        }
+    );
   }
 
 }

@@ -7,7 +7,7 @@ import '../utilities/user_data.dart';
 class SettingsPage extends StatelessWidget {
 
   User user;
-  final Function updateUser;
+  final Function(User) updateUser;
 
   // This should take in a user instance
   //String username = "Benny_Wu123";
@@ -19,7 +19,6 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(context) {
 
-    String username = user.username;  // TODO TOMORROW: implement password change
     print("settings page: $user");
 
     return Scaffold(
@@ -36,12 +35,13 @@ class SettingsPage extends StatelessWidget {
           child: Column(children: [
             ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.asset(image_url, width: 90)),
+                child: Image(image: user.profilePicture, width: 90,)
+            ),
             const SizedBox(
               height: 15,
             ),
             Text(
-              username,
+              user.username,
               style: Theme.of(context)
                   .textTheme
                   .headlineMedium!
@@ -60,7 +60,16 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Change Profile Picture",
                         bolded: false,
-                        builder: (context) => const ProfilePicturePage()),
+                        builder: (context) => ProfilePicturePage(user: user, updateUser: updateUser,)),
+                    const Divider(
+                      thickness: 1,
+                      indent: 25,
+                      color: Color.fromRGBO(20, 20, 20, 0.1),
+                    ),
+                    SettingsItem(
+                        title: "Change Username",
+                        bolded: false,
+                        builder: (context) => UsernamePage(user: user, updateUser: updateUser,)),
                     const Divider(
                       thickness: 1,
                       indent: 25,
@@ -102,6 +111,9 @@ class SettingsPage extends StatelessWidget {
                     )
                   ]),
                 )),
+            Text(user.hash()),
+            SizedBox(height: 20,),
+            // Text(user.profilePicturePath!) // Null value ??????????????????
           ]),
         ));
   }
