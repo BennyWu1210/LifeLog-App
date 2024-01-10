@@ -25,7 +25,7 @@ class GoalPage extends StatelessWidget {
   @override
   Widget build(context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("My Goals"), backgroundColor: bgcolor),
+        appBar: AppBar(title: const Text("My Goals"), backgroundColor: bgcolor, centerTitle: true,),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -127,6 +127,21 @@ class GoalPage extends StatelessWidget {
                   }),
             ),
           ],
-        ));
+        ),
+        floatingActionButton: FloatingActionButton(
+          tooltip: "Add goal",
+        backgroundColor: medgreen,
+        onPressed: () {
+              null;
+        },
+
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 35,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
   }
 }
