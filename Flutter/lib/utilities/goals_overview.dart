@@ -16,10 +16,11 @@ Widget progressBar(ProgressGoal goal) {
   );
 }
 
-Widget todoBox(TodoGoal goal, Function(TodoGoal) toggleGoal) {
+Widget todoBox(TodoGoal goal, Function(TodoGoal) toggleGoal, context) {
   // very inefficient but whatever
   return Padding(
-    padding: const EdgeInsets.fromLTRB(220, 0, 20, 0), // TODO: Make padding adaptive
+    padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.62, 0,
+        20, 0), // TODO: Make padding adaptive
     child: Checkbox(
       side: BorderSide.none,
       value: goal.state,
@@ -38,14 +39,16 @@ class GoalsOverview extends StatelessWidget {
   final Function(Goal) addGoal;
   final Function(int) removeGoal;
   final Function(TodoGoal) toggleGoal;
+  final Function(ProgressGoal, int) changeValGoal;
 
-  const GoalsOverview({
-    Key? key,
-    required this.goals,
-    required this.addGoal,
-    required this.removeGoal,
-    required this.toggleGoal,
-  }) : super(key: key);
+  const GoalsOverview(
+      {Key? key,
+      required this.goals,
+      required this.addGoal,
+      required this.removeGoal,
+      required this.toggleGoal,
+      required this.changeValGoal})
+      : super(key: key);
 
   @override
   Widget build(context) {
@@ -69,7 +72,7 @@ class GoalsOverview extends StatelessWidget {
                       ),
                       goals[0].type == GoalType.progress
                           ? progressBar(goals[0] as ProgressGoal)
-                          : todoBox(goals[0] as TodoGoal, toggleGoal),
+                          : todoBox(goals[0] as TodoGoal, toggleGoal, context),
                     ],
                   ),
                 ),
@@ -85,7 +88,7 @@ class GoalsOverview extends StatelessWidget {
                       ),
                       goals[1].type == GoalType.progress
                           ? progressBar(goals[1] as ProgressGoal)
-                          : todoBox(goals[1] as TodoGoal, toggleGoal),
+                          : todoBox(goals[1] as TodoGoal, toggleGoal, context),
                     ],
                   ),
                 ),
@@ -101,7 +104,7 @@ class GoalsOverview extends StatelessWidget {
                       ),
                       goals[2].type == GoalType.progress
                           ? progressBar(goals[2] as ProgressGoal)
-                          : todoBox(goals[2] as TodoGoal, toggleGoal),
+                          : todoBox(goals[2] as TodoGoal, toggleGoal, context),
                     ],
                   ),
                 ),
@@ -112,11 +115,11 @@ class GoalsOverview extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => GoalPage(
-                              goals: goals,
-                              addGoal: addGoal,
-                              removeGoal: removeGoal,
-                              toggleGoal: toggleGoal,
-                            ),
+                                goals: goals,
+                                addGoal: addGoal,
+                                removeGoal: removeGoal,
+                                toggleGoal: toggleGoal,
+                                changeValGoal: changeValGoal),
                           )),
                       child: const Text(
                         "3 / 8 goals completed >",
@@ -132,11 +135,11 @@ class GoalsOverview extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => GoalPage(
-                            goals: goals,
-                            addGoal: addGoal,
-                            removeGoal: removeGoal,
-                            toggleGoal: toggleGoal,
-                          ),
+                              goals: goals,
+                              addGoal: addGoal,
+                              removeGoal: removeGoal,
+                              toggleGoal: toggleGoal,
+                              changeValGoal: changeValGoal),
                         )),
                     child: const Text(
                       "3 / 8 goals completed >",

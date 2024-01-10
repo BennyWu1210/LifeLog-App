@@ -17,15 +17,10 @@ import '../utilities/local_storage.dart';
 import '../pages/settings_page.dart';
 
 class MyHomePage extends StatefulWidget {
-
   final User user;
   final Function(User) updateUser;
 
-  const MyHomePage({
-    super.key,
-    required this.user,
-    required this.updateUser
-      });
+  const MyHomePage({super.key, required this.user, required this.updateUser});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -43,9 +38,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Goal> goalList = [
     TodoGoal(title: "Say Hi to Friends", state: false),
     ProgressGoal(title: "Go to lecture", current: 12, total: 30),
-    ProgressGoal(title: "Exercise", current: 8, total: 10),
-    TodoGoal(title: "Start juanning", state: true, completed: true),
     ProgressGoal(title: "Haidilao", current: 15, total: 15, completed: true),
+    TodoGoal(title: "Start juanning", state: true, completed: true),
   ];
 
   void loadJournals() async {
@@ -76,6 +70,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void changeValGoal(ProgressGoal g, int val) {
+    setState(() {
+      g.current = val;
+      g.completed = g.current == g.total;
+    });
+  }
+
   void removeGoal(int idx) {
     setState(() {
       goalList.removeAt(idx);
@@ -97,8 +98,6 @@ class _MyHomePageState extends State<MyHomePage> {
       writeJournals(journalList);
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -125,15 +124,18 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 38, horizontal: 30),
               child: GoalsOverview(
-                goals: goalList,
-                addGoal: addGoal,
-                removeGoal: removeGoal,
-                toggleGoal: toggleGoal,
-              )),
+                  goals: goalList,
+                  addGoal: addGoal,
+                  removeGoal: removeGoal,
+                  toggleGoal: toggleGoal,
+                  changeValGoal: changeValGoal)),
 
           Padding(
-              padding:
-                  const EdgeInsets.only(top: 220, bottom: 110, left: 25, right: 25), //vertical: 200, horizontal: 25
+              padding: const EdgeInsets.only(
+                  top: 220,
+                  bottom: 110,
+                  left: 25,
+                  right: 25), //vertical: 200, horizontal: 25
               child: FutureBuilder<List<Journal>>(
                 future: readJournals(),
                 builder: (BuildContext context,
@@ -170,8 +172,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                         borderRadius:
                                             BorderRadius.circular(20)),
                                     child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          6, 6, 0, 6),
+                                      padding:
+                                          const EdgeInsets.fromLTRB(6, 6, 0, 6),
                                       child: ListTile(
                                         title: Text(journalList[index].title,
                                             style: Theme.of(context)
@@ -196,9 +198,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       JournalPage(
-                                                          journal:
-                                                              journalList[
-                                                                  index])));
+                                                          journal: journalList[
+                                                              index])));
                                         },
                                       ),
                                     ),
@@ -220,8 +221,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   onPressed: () {
                                                     deleteJournal(index);
                                                   },
-                                                  style: ElevatedButton
-                                                      .styleFrom(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
                                                           backgroundColor:
                                                               Colors.red),
                                                   child: const Row(
@@ -239,8 +240,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       Text(
                                                         'Delete',
                                                         style: TextStyle(
-                                                            color:
-                                                                Colors.white,
+                                                            color: Colors.white,
                                                             fontSize: 15),
                                                       ),
                                                     ],
@@ -278,14 +278,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   width: 40,
                 ),
-                addButton(
-                    () => {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CreatePostPage(
-                                      addJournalCallback: addJournal)))
-                        }),
+                addButton(() => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CreatePostPage(
+                                  addJournalCallback: addJournal)))
+                    }),
                 const SizedBox(
                   width: 40,
                 ),
