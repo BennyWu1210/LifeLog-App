@@ -28,7 +28,7 @@ class _ModifyProgressPageState extends State<ModifyProgressPage> {
           activeColor: darkgreen,
           value: widget.goal.current.toDouble(),
           max: widget.goal.total.toDouble(),
-          divisions: 5,
+          divisions: widget.goal.total,
           label: widget.goal.current.toString(),
           onChanged: (double value) {
             widget.goal.current = value.toInt();
