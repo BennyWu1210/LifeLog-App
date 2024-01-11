@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:journal_app/utilities/user_data.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'goal_template.dart';
 import 'journal_template.dart';
 
 
@@ -82,5 +83,40 @@ Future<User> readUser() async {
     print("---------- USER LOAD ERROR --------------");
     print(e);
     return User.empty();
+  }
+}
+
+
+/*
+--------------  Goals Data Storage  -----------------
+ */
+
+Future<File> get _localGoalsFile async {
+  final path = await _localPath;
+  return File('$path/goals.json');
+}
+
+void writeGoals(List<Goal> gl) async{
+  final file = await _localGoalsFile;
+  final List<Map<String, dynamic>> jsonList = [];
+  for (Goal g in gl){
+    jsonList.add(g.toJson());
+  }
+  file.writeAsString(jsonEncode(jsonList));
+}
+
+Future<List<Goal>> readGoals() async{
+  try {
+    final file = await _localGoalsFile;
+    String contents = await file.readAsString();
+    final data = jsonDecode(contents) as List;
+    List<Goal> goals = data.map((item) => Goal.fromJson(item)).toList();
+    print("############## readGoals: ${goals.length}");
+    return goals;
+
+  } catch (e) {
+    print("---------- GOALS LOAD ERROR --------------");
+    print(e);
+    return [];
   }
 }

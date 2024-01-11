@@ -35,23 +35,38 @@ class _MyHomePageState extends State<MyHomePage> {
 // This enables a smoother transition to backend fetching
 
   List<Journal> journalList = [];
-  List<Goal> goalList = [
+  /* List<Goal> goalList = [
     TodoGoal(title: "Say Hi to Friends", state: false),
     ProgressGoal(title: "Go to lecture", current: 12, total: 30),
     ProgressGoal(title: "Haidilao", current: 15, total: 15, completed: true),
     TodoGoal(title: "Start juanning", state: true, completed: true),
   ];
+   */
+  List<Goal> goalList = [];
 
-  void loadJournals() async {
+  void loadJournalsAndGoals() async {
     journalList = await readJournals();
+    goalList = await readGoals();
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-    loadJournals();
+    loadJournalsAndGoals();
+    
+    /* // Run this code once to load goals into storage
+    writeGoals([
+    TodoGoal(title: "Say Hi to Friends", state: false),
+    ProgressGoal(title: "Go to lecture", current: 12, total: 30),
+    ProgressGoal(title: "Haidilao", current: 15, total: 15, completed: true),
+    TodoGoal(title: "Start juanning", state: true, completed: true),
+    ]);
+     */
+
     print("-------------------- FIRST LOAD -----------------------------");
-    print(journalList.length);
+    print("journalList length: ${journalList.length}");
+    print("goalList length: ${goalList.length}");
   }
 
   late List<bool> journalDropdown =
@@ -60,6 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void addGoal(Goal g) {
     setState(() {
       goalList.add(g);
+      writeGoals(goalList);
     });
   }
 
@@ -67,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       g.state = !g.state;
       g.completed = g.state;
+      writeGoals(goalList);
     });
   }
 
@@ -74,12 +91,14 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       g.current = val;
       g.completed = g.current == g.total;
+      writeGoals(goalList);
     });
   }
 
   void removeGoal(int idx) {
     setState(() {
       goalList.removeAt(idx);
+      writeGoals(goalList);
     });
   }
 
@@ -102,6 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     print("homepage: " + widget.user.toString());
+    print("homepage: ${goalList.length}");
     return Scaffold(
       appBar: AppBar(
           backgroundColor: bgcolor,
