@@ -36,6 +36,9 @@ Widget todoBox(TodoGoal goal, Function(TodoGoal) toggleGoal, context) {
 
 class GoalsOverview extends StatelessWidget {
   final List<Goal> goals;
+  final int todoCount;
+  final int progressCount;
+  final int completedCount;
   final Function(Goal) addGoal;
   final Function(int) removeGoal;
   final Function(TodoGoal) toggleGoal;
@@ -47,7 +50,10 @@ class GoalsOverview extends StatelessWidget {
       required this.addGoal,
       required this.removeGoal,
       required this.toggleGoal,
-      required this.changeValGoal})
+      required this.changeValGoal,
+        required this.todoCount,
+        required this.progressCount,
+        required this.completedCount})
       : super(key: key);
 
   @override
@@ -121,9 +127,9 @@ class GoalsOverview extends StatelessWidget {
                                 toggleGoal: toggleGoal,
                                 changeValGoal: changeValGoal),
                           )),
-                      child: const Text(
-                        "3 / 8 goals completed >",
-                        style: TextStyle(
+                      child: Text(
+                        "$completedCount / ${goals.length} goals completed >",
+                        style: const TextStyle(
                             color: darkgreen, fontWeight: FontWeight.bold),
                       )),
                 )
@@ -141,9 +147,9 @@ class GoalsOverview extends StatelessWidget {
                               toggleGoal: toggleGoal,
                               changeValGoal: changeValGoal),
                         )),
-                    child: const Text(
-                      "3 / 8 goals completed >",
-                      style: TextStyle(
+                    child: Text(
+                      "$completedCount / ${goals.length} goals completed >",
+                      style: const TextStyle(
                           color: darkgreen,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),

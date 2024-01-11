@@ -54,15 +54,15 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     loadJournalsAndGoals();
-    
-    /* // Run this code once to load goals into storage
-    writeGoals([
+
+     // Run this code once to load goals into storage
+    /*writeGoals([
     TodoGoal(title: "Say Hi to Friends", state: false),
     ProgressGoal(title: "Go to lecture", current: 12, total: 30),
     ProgressGoal(title: "Haidilao", current: 15, total: 15, completed: true),
     TodoGoal(title: "Start juanning", state: true, completed: true),
     ]);
-     */
+    */
 
     print("-------------------- FIRST LOAD -----------------------------");
     print("journalList length: ${journalList.length}");
@@ -86,6 +86,37 @@ class _MyHomePageState extends State<MyHomePage> {
       writeGoals(goalList);
     });
   }
+
+  int countTodoGoals() {
+    int count = 0;
+    for (Goal goal in goalList) {
+      if (goal is TodoGoal) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  int countProgressGoals() {
+    int count = 0;
+    for (Goal goal in goalList) {
+      if (goal is TodoGoal) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  int countCompletedGoals() {
+    int count = 0;
+    for (Goal goal in goalList) {
+      if (goal.completed == true) {
+        count++;
+      }
+    }
+    return count;
+  }
+
 
   void changeValGoal(ProgressGoal g, int val) {
     setState(() {
@@ -120,8 +151,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     print("homepage: " + widget.user.toString());
     print("homepage: ${goalList.length}");
+
+    // Get the number of td and prog goals for the goal preview page
+    final int todoCount = countTodoGoals();
+    final int progressCount = countProgressGoals();
+    final int completedCount = countCompletedGoals();
+    print("completedCount: $completedCount");
+
     return Scaffold(
       appBar: AppBar(
           backgroundColor: bgcolor,
@@ -144,6 +183,9 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 38, horizontal: 30),
               child: GoalsOverview(
+                  todoCount: todoCount,
+                  progressCount: progressCount,
+                  completedCount: completedCount,
                   goals: goalList,
                   addGoal: addGoal,
                   removeGoal: removeGoal,
