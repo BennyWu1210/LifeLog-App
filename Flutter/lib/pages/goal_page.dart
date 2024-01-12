@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:journal_app/pages/create_goal.dart';
 import 'package:journal_app/pages/increment_progress.dart';
 import 'package:journal_app/style/style.dart';
 import 'package:journal_app/utilities/goal_template.dart';
@@ -46,9 +47,12 @@ class _GoalPageState extends State<GoalPage> {
   }
 
   void _updateGoalLists() {
-    incompletedList =
-        widget.goals.where((element) => !element.completed).toList();
-    completedList = widget.goals.where((element) => element.completed).toList();
+    setState(() {
+      incompletedList =
+          widget.goals.where((element) => !element.completed).toList();
+      completedList =
+          widget.goals.where((element) => element.completed).toList();
+    });
   }
 
   @override
@@ -169,8 +173,13 @@ class _GoalPageState extends State<GoalPage> {
       floatingActionButton: FloatingActionButton(
         tooltip: "Add goal",
         backgroundColor: medgreen,
-        onPressed: () {
-          null;
+        onPressed: () async {
+          var val = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CreateGoalPage(addGoalCallBack: widget.addGoal)));
+          _updateGoalLists();
         },
         child: const Icon(
           Icons.add,

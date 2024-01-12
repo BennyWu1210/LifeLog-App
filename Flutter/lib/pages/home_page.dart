@@ -56,13 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
     loadJournalsAndGoals();
 
      // Run this code once to load goals into storage
-    /*writeGoals([
-    TodoGoal(title: "Say Hi to Friends", state: false),
-    ProgressGoal(title: "Go to lecture", current: 12, total: 30),
-    ProgressGoal(title: "Haidilao", current: 15, total: 15, completed: true),
-    TodoGoal(title: "Start juanning", state: true, completed: true),
-    ]);
-    */
+    // writeGoals([
+    // TodoGoal(title: "Say Hi to Friends", state: false),
+    // ProgressGoal(title: "Go to lecture", current: 12, total: 30),
+    // ProgressGoal(title: "Haidilao", current: 15, total: 15, completed: true),
+    // TodoGoal(title: "Start juanning", state: true, completed: true),
+    // ]);
+    
 
     print("-------------------- FIRST LOAD -----------------------------");
     print("journalList length: ${journalList.length}");
