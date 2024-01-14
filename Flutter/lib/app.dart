@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:journal_app/backend/backend.dart';
 import 'package:journal_app/pages/home_page.dart';
 import 'package:journal_app/utilities/local_storage.dart';
 import 'package:journal_app/utilities/user_data.dart';
@@ -23,6 +24,7 @@ class _AppState extends State<App> {
   @override
   void initState(){
     super.initState();
+    backendGet(); // TODO: Remove this test code for connecting to backend
     loadUser();
     print("----------- init user ----------------");
 
