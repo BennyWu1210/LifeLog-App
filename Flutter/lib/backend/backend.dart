@@ -6,6 +6,6 @@ Future<void> backendGet() async {
   if (response.statusCode == 200) {
     print('Response data: ${response.body}');
   } else {
-    print('Request failed with status: ${response.statusCode}.');
+    throw Exception('Request failed with status: ${response.statusCode}.');
   }
 }
