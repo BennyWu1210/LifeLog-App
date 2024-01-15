@@ -41,3 +41,6 @@ Flutter/app.*.map.json
 Flutter/android/app/debug
 Flutter/android/app/profile
 Flutter/android/app/release
+
+*.env
+
