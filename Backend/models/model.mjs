@@ -1,34 +1,5 @@
 import mongoose from "mongoose";
 
-const UserSchema = mongoose.Schema({
-    id: {
-        type: String,
-        required: true
-    },
-    username: {
-        type: String,
-        required: true
-    },
-
-    // auth: password + stored salt + stored hash = verified
-    hash: {
-        type: String,
-        required: true
-    },
-    salt: {
-        type: String,
-        required: true
-    },
-
-    profilePicPath: {
-        type: String,
-    },
-
-    journals: {
-        type: [journalSchema],
-        required: true
-    }
-})
 
 const journalSchema = mongoose.Schema({
     title: {
@@ -68,8 +39,48 @@ const goalSchema = mongoose.Schema({
     },
 }, {timestamps: true, discriminatorKey: 'kind'})
 
+
+
+const UserSchema = mongoose.Schema({
+    // do we use uuid for this?
+    id: {
+        type: Number,
+        required: true
+    },
+    username: {
+        type: String,
+        required: true
+    },
+
+    // auth: password + stored salt + stored hash = verified
+    hash: {
+        type: String,
+        required: true
+    },
+    salt: {
+        type: String,
+        required: true
+    },
+
+    profilePicPath: {
+        type: String,
+    },
+
+    journals: {
+        type: [journalSchema],
+        required: true
+    },
+    goals: {
+        type: [goalSchema],
+        required: true
+    }
+
+})
+
+
 export const Journal = mongoose.model('Journal', journalSchema);
 export const Goal = mongoose.model('Goal', goalSchema);
+export const User = mongoose.model('User', UserSchema);
 Goal.discriminator('ProcessType', progressTypeSchema);
 Goal.discriminator('Todo', todoTypeSchema);
 

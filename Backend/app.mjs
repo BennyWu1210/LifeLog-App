@@ -10,6 +10,7 @@ app.listen(port, () => {
   console.log(`App listening PORT ${port}`)
 })
 
+
 app.post("/journal", (req, res) => {
   const journal = new Journal({title: 'New Journal', body: 'Bill is a super dalao'});
   journal.save()
