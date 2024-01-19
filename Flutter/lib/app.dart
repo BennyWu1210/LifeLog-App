@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:journal_app/backend/backend.dart';
 import 'package:journal_app/pages/home_page.dart';
+import 'package:journal_app/pages/login_page.dart';
 import 'package:journal_app/utilities/local_storage.dart';
 import 'package:journal_app/utilities/user_data.dart';
 
@@ -42,6 +43,7 @@ class _AppState extends State<App> {
     print(user);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<User>
@@ -50,7 +52,8 @@ class _AppState extends State<App> {
         builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             // The Future is resolved
-            return MyHomePage(updateUser: updateUserInfo, user: snapshot.data!);
+            // return MyHomePage(updateUser: updateUserInfo, user: snapshot.data!);
+            return LoginPage();
           } else {
             // The Future is still running
             return const CircularProgressIndicator(); // Show a loading spinner

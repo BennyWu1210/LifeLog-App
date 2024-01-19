@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 Future<void> backendGet() async {
   /*
@@ -18,4 +19,17 @@ Future<void> backendGet() async {
     throw Exception('Request failed with status: ${response.statusCode}.');
   }
   print("");
+}
+
+Future<http.Response> authenticate(String username, String password) async {
+  return http.post(
+      Uri.parse('http://10.0.2.2:8080/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    body: jsonEncode(<String, String>{
+      'username': username,
+      'password': password
+    })
+  );
 }

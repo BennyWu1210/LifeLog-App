@@ -14,6 +14,22 @@ app.listen(port, () => {
 })
 
 
+app.post("/login", (req, res) => {
+  try {
+    const { username, password } = req.body;
+    res.json({
+      "username": username,
+      "password": password
+    });
+    console.log(username);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('An error occurred');
+  }
+});
+
+
+
 app.post("/journal", (req, res) => {
   console.log(req.body);
   const {title, body} = req.body;
@@ -46,11 +62,8 @@ app.post("/goal", (req, res) => {
     kind: 'ProgressType',
     current: 2,
     total: 10,
-    details: {
-      current: 2,
-      total: 10
-    }
   });
+  
   goal.save()
   .then(result => {
     res.send(result);
