@@ -43,4 +43,5 @@ Flutter/android/app/profile
 Flutter/android/app/release
 
 *.env
+Backend/node_modules
 
