@@ -81,8 +81,7 @@ const UserSchema = mongoose.Schema({
 export const Journal = mongoose.model('Journal', journalSchema);
 export const Goal = mongoose.model('Goal', goalSchema);
 export const User = mongoose.model('User', UserSchema);
-Goal.discriminator('ProcessType', progressTypeSchema);
-Goal.discriminator('Todo', todoTypeSchema);
-
+Goal.discriminator('ProgressType', progressTypeSchema);
+Goal.discriminator('TodoType', todoTypeSchema);
 
 

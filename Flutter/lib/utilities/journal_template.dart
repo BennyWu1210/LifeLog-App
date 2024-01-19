@@ -1,5 +1,6 @@
 
 class Journal {
+  final String id = "LOCAL";
   final String title;
   final String content;
   final DateTime time;
