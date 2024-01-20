@@ -14,10 +14,10 @@ class SignupPage extends StatelessWidget {
   final passwordController = TextEditingController();
   SignupPage({Key? key}) : super(key: key);
 
-  Widget popup(BuildContext context) {
+  Widget popup(BuildContext context, String msg) {
     return AlertDialog(
       title: Text(
-        "Please do not leave the username or the password blank",
+        msg,
         style: Theme.of(context).textTheme.bodyMedium,
       ),
       actions: [
@@ -63,8 +63,14 @@ class SignupPage extends StatelessWidget {
                         // popup
                         showDialog(
                             context: context,
-                            builder: (BuildContext context) => popup(context));
-                      } else {
+                            builder: (BuildContext context) => popup(context, "Please do not leave the username or the password blank"));
+                      }
+                      else if (passwordController.text.length < 6){
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => popup(context, "Please choose a password that has more than 6 characters"));
+                      }
+                      else {
 
                       }
                     },

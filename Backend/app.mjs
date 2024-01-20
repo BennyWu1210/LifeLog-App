@@ -58,7 +58,9 @@ app.listen(port, () => {
 
 app.post("/signup", (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, hash, salt } = req.body;
+    
+
   } catch (err) {
     console.log(err);
     res.status(500).send('An error occurred');
