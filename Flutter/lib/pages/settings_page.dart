@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:journal_app/pages/settings_subpages.dart';
 import 'package:journal_app/style/style.dart';
+import 'package:journal_app/utilities/input.dart';
 
 import '../utilities/user_data.dart';
 
 class SettingsPage extends StatelessWidget {
-
   User user;
   final Function(User) updateUser;
 
@@ -18,7 +18,6 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(context) {
-
     print("settings page: $user");
 
     return Scaffold(
@@ -35,8 +34,10 @@ class SettingsPage extends StatelessWidget {
           child: Column(children: [
             ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image(image: user.profilePicture, width: 90,)
-            ),
+                child: Image(
+                  image: user.profilePicture,
+                  width: 90,
+                )),
             const SizedBox(
               height: 15,
             ),
@@ -60,7 +61,10 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Change Profile Picture",
                         bolded: false,
-                        builder: (context) => ProfilePicturePage(user: user, updateUser: updateUser,)),
+                        builder: (context) => ProfilePicturePage(
+                              user: user,
+                              updateUser: updateUser,
+                            )),
                     const Divider(
                       thickness: 1,
                       indent: 25,
@@ -69,7 +73,10 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Change Username",
                         bolded: false,
-                        builder: (context) => UsernamePage(user: user, updateUser: updateUser,)),
+                        builder: (context) => UsernamePage(
+                              user: user,
+                              updateUser: updateUser,
+                            )),
                     const Divider(
                       thickness: 1,
                       indent: 25,
@@ -78,7 +85,10 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Change Password",
                         bolded: false,
-                        builder: (context) => PasswordPage(user: user, updateUser: updateUser,)),
+                        builder: (context) => PasswordPage(
+                              user: user,
+                              updateUser: updateUser,
+                            )),
                     const Divider(
                       thickness: 1,
                       indent: 25,
@@ -105,14 +115,27 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Log Out",
                         bolded: true,
-                        builder: (context) => SettingsPage(user: user, updateUser: updateUser,)),
+                        builder: (context) => SettingsPage(
+                              user: user,
+                              updateUser: updateUser,
+                            )),
                     const SizedBox(
                       height: 15,
                     )
                   ]),
                 )),
-            Text(user.hash()),
-            SizedBox(height: 20,),
+            Text(user.hash()), // WHAT IS THIS FOR?
+            const SizedBox(
+              height: 50,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: CoolButton(
+                  text: "Sync With Cloud",
+                  handler: () =>
+                      {}) // should trigger an update in "MyHomePage" that sends all local change to the cloud
+              ,
+            )
             // Text(user.profilePicturePath!) // Null value ??????????????????
           ]),
         ));

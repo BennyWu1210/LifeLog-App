@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:journal_app/pages/home_page.dart';
 import 'package:journal_app/style/style.dart';
 import 'package:journal_app/utilities/input.dart';
 import 'package:journal_app/backend/backend.dart';
@@ -9,11 +10,9 @@ import '../utilities/user_data.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatelessWidget {
-
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   LoginPage({Key? key}) : super(key: key);
-
 
   Widget popup(BuildContext context) {
     return AlertDialog(
@@ -27,7 +26,6 @@ class LoginPage extends StatelessWidget {
       ],
     );
   }
-
 
   @override
   Widget build(context) {
@@ -47,37 +45,46 @@ class LoginPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
-                  decoration: const InputDecoration(
-                      hintText: "Username"
-                  ),
+                  decoration: const InputDecoration(hintText: "Username"),
                   controller: usernameController,
                 ),
                 const SizedBox(height: 25),
                 TextFormField(
                   decoration: const InputDecoration(
-                      hintText: "Password",
+                    hintText: "Password",
                   ),
                   obscureText: true,
                   controller: passwordController,
                 ),
-
                 const SizedBox(height: 50),
-                CoolButton(handler: () async {
-                  if (usernameController.text == '' || passwordController.text == ''){
-                    // popup
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) => popup(context)
-                    );
-                  }
-                  else{
-                    // TODO: implement login here
-                    http.Response response = await authenticate(usernameController.text, passwordController.text);
-                    Map<String, dynamic> json = jsonDecode(response.body);
-                    print(json['username']);
-                    print(json['password']);
-                  }
-                }, text: "Log in")
+                CoolButton(
+                    handler: () async {
+                      if (usernameController.text == '' ||
+                          passwordController.text == '') {
+                        // popup
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => popup(context));
+                      } else {
+                        // TODO: implement login here
+                        http.Response response = await authenticate(
+                                usernameController.text,
+                                passwordController.text)
+                            .then((res) {
+                          Map<String, dynamic> json = jsonDecode(res.body);
+                          print(json['username']);
+                          print(json['password']);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyHomePage(
+                                      user: User("sample user", "hi"),
+                                      updateUser: (u) => {})));
+                          return res;
+                        });
+                      }
+                    },
+                    text: "Log in")
               ],
             )));
   }

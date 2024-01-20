@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:journal_app/pages/journal.dart';
 import 'package:intl/intl.dart';
+import 'package:journal_app/pages/motivation_page.dart';
 import 'package:journal_app/utilities/goal_template.dart';
 import 'package:journal_app/utilities/goals_overview.dart';
 import 'package:journal_app/utilities/input.dart';
@@ -55,14 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     loadJournalsAndGoals();
 
-     // Run this code once to load goals into storage
+    // Run this code once to load goals into storage
     // writeGoals([
     // TodoGoal(title: "Say Hi to Friends", state: false),
     // ProgressGoal(title: "Go to lecture", current: 12, total: 30),
     // ProgressGoal(title: "Haidilao", current: 15, total: 15, completed: true),
     // TodoGoal(title: "Start juanning", state: true, completed: true),
     // ]);
-    
 
     print("-------------------- FIRST LOAD -----------------------------");
     print("journalList length: ${journalList.length}");
@@ -117,7 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return count;
   }
 
-
   void changeValGoal(ProgressGoal g, int val) {
     setState(() {
       g.current = val;
@@ -151,7 +150,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     print("homepage: " + widget.user.toString());
     print("homepage: ${goalList.length}");
 
@@ -329,8 +327,13 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const IconButton(
-                    onPressed: null,
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MotivationPage()));
+                    },
                     tooltip: 'Friends',
                     icon: Icon(
                       Icons.group,
