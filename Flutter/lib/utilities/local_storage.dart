@@ -5,8 +5,6 @@ import 'dart:io';
 import 'goal_template.dart';
 import 'journal_template.dart';
 
-
-
 Future<String> get _localPath async {
   final directory = await getApplicationDocumentsDirectory();
   return directory.path;
@@ -21,10 +19,10 @@ Future<File> get _localJournalFile async {
   return File('$path/journals.json');
 }
 
-Future<File> writeJournals(List<Journal> jList) async{
+Future<File> writeJournals(List<Journal> jList) async {
   final file = await _localJournalFile;
   final List<Map<String, dynamic>> jsonList = [];
-  for (Journal j in jList){
+  for (Journal j in jList) {
     jsonList.add(j.toJson());
   }
   return file.writeAsString(jsonEncode(jsonList));
@@ -41,12 +39,14 @@ Future<List<Journal>> readJournals() async {
     final data = jsonDecode(contents) as List;
 
     // Convert the list of maps to a list of Journals
-    List<Journal> journals = data.map((item) => Journal.fromJson(item)).toList();
+    List<Journal> journals =
+        data.map((item) => Journal.fromJson(item)).toList();
 
     return journals;
   } catch (e) {
     // If encountering an error, return an empty list
     print("---------- LOAD ERROR --------------");
+    print(e);
     return [];
   }
 }
@@ -60,7 +60,7 @@ Future<File> get _localUserFile async {
   return File("$path/userdata.json");
 }
 
-Future<File> writeUser(User u) async{
+Future<File> writeUser(User u) async {
   final file = await _localUserFile;
   return file.writeAsString(jsonEncode(u.toJson()));
 }
@@ -77,7 +77,6 @@ Future<User> readUser() async {
     print("------------------ readUser: -------------------");
     print(data);
     return User.fromJson(data);
-
   } catch (e) {
     // If encountering an error, return an empty list
     print("---------- USER LOAD ERROR --------------");
@@ -85,7 +84,6 @@ Future<User> readUser() async {
     return User.empty();
   }
 }
-
 
 /*
 --------------  Goals Data Storage  -----------------
@@ -96,16 +94,16 @@ Future<File> get _localGoalsFile async {
   return File('$path/goals.json');
 }
 
-void writeGoals(List<Goal> gl) async{
+void writeGoals(List<Goal> gl) async {
   final file = await _localGoalsFile;
   final List<Map<String, dynamic>> jsonList = [];
-  for (Goal g in gl){
+  for (Goal g in gl) {
     jsonList.add(g.toJson());
   }
   file.writeAsString(jsonEncode(jsonList));
 }
 
-Future<List<Goal>> readGoals() async{
+Future<List<Goal>> readGoals() async {
   try {
     final file = await _localGoalsFile;
     String contents = await file.readAsString();
@@ -113,7 +111,6 @@ Future<List<Goal>> readGoals() async{
     List<Goal> goals = data.map((item) => Goal.fromJson(item)).toList();
     print("############## readGoals: ${goals.length}");
     return goals;
-
   } catch (e) {
     print("---------- GOALS LOAD ERROR --------------");
     print(e);

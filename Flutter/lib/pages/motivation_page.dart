@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:journal_app/style/style.dart';
 import 'package:journal_app/utilities/input.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MotivationPage extends StatefulWidget {
   MotivationPage({super.key});
@@ -14,43 +15,30 @@ class MotivationPage extends StatefulWidget {
 }
 
 class _MotivationPageState extends State<MotivationPage> {
-  String poopoo = "Bill just change this lol, I don't know how to fix .env";
-  // "sk-Zk
+  String _quote = 'Press the button to generate a motivational quote!';
 
-  String quote = "Your motivational quote will appear here.";
-
-  final String apiUrl = "https://api.openai.com/v1/chat/completions";
-
-  Future<void> generateQuote() async {
+  Future<void> _generateQuote() async {
+    const String apiUrl = 'http://localhost:8080/generate-quote';
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $poopoo',
       },
       body: jsonEncode({
-        "model": "gpt-3.5-turbo",
-        'messages': [
-          {
-            "role": "user",
-            "content":
-                "Generate a motivation quote for somebody who wants to complete all their task!"
-          }
-        ],
-        'max_tokens': 200,
-        'temperature': 0.85,
+        "prompt":
+            "Generate a motivation quote for somebody who wants to complete all their tasks!"
       }),
     );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       setState(() {
-        quote = data['choices'][0]['message']['content'];
-        print("HEH: ");
-        print(data);
+        _quote = data['quote'];
       });
     } else {
-      print('Failed to generate quote: ${response.body}');
+      setState(() {
+        _quote = 'Failed to generate quote: ${response.statusCode}';
+      });
     }
   }
 
@@ -74,12 +62,12 @@ class _MotivationPageState extends State<MotivationPage> {
                   width: 0.75 * MediaQuery.of(context).size.width,
                   height: 400,
                   decoration: const BoxDecoration(
-                      color: lightgreen,
-                      ),
+                    color: lightgreen,
+                  ),
                   child: Padding(
                       padding: const EdgeInsets.all(30),
                       child: Text(
-                        quote,
+                        _quote,
                         style: const TextStyle(
                             fontSize: 18,
                             color: dark,
@@ -93,7 +81,7 @@ class _MotivationPageState extends State<MotivationPage> {
                 padding: EdgeInsets.symmetric(
                     horizontal: 0.125 * MediaQuery.of(context).size.width),
                 child:
-                    CoolButton(text: "Generate Quote", handler: generateQuote))
+                    CoolButton(text: "Generate Quote", handler: _generateQuote))
           ],
         ));
   }

@@ -1,4 +1,5 @@
 import express from "express";
+import axios from "axios"; // Import axios for HTTP requests
 
 import "./db/connection.mjs";
 import { Journal, Goal } from "./models/model.mjs";
@@ -8,6 +9,47 @@ const port = process.env.PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+app.post("/generate-quote", async (req, res) => {
+  try {
+    const apiUrl = "https://api.openai.com/v1/chat/completions";
+    const apiKey = process.env.OPENAI_API_KEY; // Load API key from environment variables
+
+    if (!apiKey) {
+      return res.status(500).send("API key not found");
+    }
+
+    const { prompt } = req.body; // Extract prompt from request body
+
+    const response = await axios.post(apiUrl, {
+      model: "gpt-3.5-turbo",
+      messages: [{
+        role: "user",
+        content: prompt
+      }],
+      max_tokens: 200,
+      temperature: 0.85,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+    });
+
+    if (response.status === 200) {
+      const data = response.data;
+      const quote = data.choices[0].message.content;
+      res.json({ quote });
+    } else {
+      console.error('Failed to generate quote:', response.data);
+      res.status(response.status).send('Failed to generate quote');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('An error occurred');
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`App listening PORT ${port}`)
