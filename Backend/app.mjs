@@ -14,6 +14,16 @@ app.listen(port, () => {
 })
 
 
+app.post("/signup", (req, res) => {
+  try {
+    const { username, password } = req.body;
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('An error occurred');
+  }
+});
+
+
 app.post("/login", (req, res) => {
   try {
     const { username, password } = req.body;
@@ -21,7 +31,7 @@ app.post("/login", (req, res) => {
       "username": username,
       "password": password
     });
-    console.log(username);
+    console.log("username: " + username);
   } catch (err) {
     console.log(err);
     res.status(500).send('An error occurred');

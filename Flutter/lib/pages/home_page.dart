@@ -164,6 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: bgcolor,
           centerTitle: true,
           scrolledUnderElevation: 0,
+          leading: const SizedBox(), // removes the back button on homepage
           title: Image.asset(
             'assets/images/lp_logo_l.png',
             scale: 4,
@@ -334,14 +335,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           MaterialPageRoute(
                               builder: (context) => MotivationPage()));
                     },
-                    tooltip: 'Friends',
-                    icon: Icon(
-                      Icons.group,
+                    tooltip: 'Motivation',
+                    icon: const Icon(
+                      Icons.bolt,
                       color: dark,
-                      size: 30.0,
+                      size: 36.0,
                     )),
                 const SizedBox(
-                  width: 40,
+                  width: 45,
                 ),
                 addButton(() => {
                       Navigator.push(

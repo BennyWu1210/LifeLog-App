@@ -1,17 +1,13 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const backendURL = "localhost:8080";
+//const backendURL = "localhost:8080"; // IOS emulator
+const backendURL = "10.0.2.2:8080"; // Android emulator
 Future<void> backendGet() async {
   /*
   function for testing only
+  */
 
-  android emulator:
-  final response = await http.get(Uri.parse('http://10.0.2.2:3000/ping'));
-
-  ios emulator:
-  final response = await http.get(Uri.parse('http://localhost:3000/ping'));
-   */
   final response = await http.get(Uri.parse('http://$backendURL/journal'));
   print("#########\n########## backendGet");
   if (response.statusCode == 200) {

@@ -63,26 +63,27 @@ class _MotivationPageState extends State<MotivationPage> {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           backgroundColor: bgcolor,
+          centerTitle: true,
         ),
         body: Column(
           children: [
             SizedBox(height: 50),
             ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(20),
               child: Container(
                   width: 0.75 * MediaQuery.of(context).size.width,
                   height: 400,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: lightgreen,
-                      border: Border.all(color: Colors.black, width: 0.5)),
+                      ),
                   child: Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(30),
                       child: Text(
                         quote,
                         style: const TextStyle(
-                            fontSize: 22,
+                            fontSize: 18,
                             color: dark,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.w400),
                       ))),
             ),
             const SizedBox(

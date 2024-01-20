@@ -53,7 +53,7 @@ class _AppState extends State<App> {
           if (snapshot.connectionState == ConnectionState.done) {
             // The Future is resolved
             // return MyHomePage(updateUser: updateUserInfo, user: snapshot.data!);
-            return LoginPage();
+            return LoginPage(user: snapshot.data!, updateUser: updateUserInfo,);
           } else {
             // The Future is still running
             return const CircularProgressIndicator(); // Show a loading spinner
