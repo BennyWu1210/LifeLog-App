@@ -2,7 +2,7 @@ import express from "express";
 import axios from "axios"; // Import axios for HTTP requests
 
 import "./db/connection.mjs";
-import { Journal, Goal } from "./models/model.mjs";
+import { Journal, Goal, User } from "./models/model.mjs";
 
 const app = express();
 const port = process.env.PORT;
@@ -56,9 +56,23 @@ app.listen(port, () => {
 })
 
 
-app.post("/signup", (req, res) => {
+app.post("/signup", async (req, res) => {
   try {
     const { username, hash, salt } = req.body;
+
+    const userExists = await User.findOne({ username: username });
+    if (userExists) {
+      return res.status(409).send('Username already exists'); // 409 Conflict
+    }
+    // Store the user in the database
+    const newUser = await User({ id: Math.random() * 3000, username: username, hash: hash, salt: salt, profilePicPath: "", journals: [], goals: []});
+    newUser.save().then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      res.status(500).send('An error occurred');
+      console.log(err);
+    });
     
 
   } catch (err) {
@@ -68,13 +82,25 @@ app.post("/signup", (req, res) => {
 });
 
 
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   try {
-    const { username, password } = req.body;
-    res.json({
-      "username": username,
-      "password": password
-    });
+    const { inputUsername, inputPassword } = req.body;
+
+    // Find user by username
+    const user = await User.findOne({ username: inputUsername });
+    if (!user) {
+      return res.status(400).send('Cannot find user');
+    }
+
+    // Compare provided password with stored hashed password
+    const isMatch = verifyPassword(inputPassword, user.hash, user.salt);
+    if (!isMatch) {
+      console.log("WTF");
+      return res.status(400).send('Invalid credentials');
+    }
+
+    res.send(user);
+
     console.log("username: " + username);
   } catch (err) {
     console.log(err);
@@ -137,3 +163,21 @@ app.get("/goal", (req, res) => {
     console.log(err);
   });
 });
+
+// Helper Functions (Hashing purposes)
+import crypto from "crypto";
+
+function hashPassword(password, salt) {
+  // Create a SHA-256 hash with the password and salt
+  const hash = crypto.createHash('sha256');
+  hash.update(password + salt);
+  const hashedPassword = hash.digest('base64'); // Convert to base64
+  return hashedPassword;
+}
+
+function verifyPassword(inputPassword, storedHash, salt) {
+  // Hash the input password with the same salt
+  const inputHash = hashPassword(inputPassword, salt);
+  // Compare the input hash with the stored hash
+  return inputHash === storedHash;
+}

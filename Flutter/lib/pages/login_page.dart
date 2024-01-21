@@ -15,12 +15,13 @@ class LoginPage extends StatelessWidget {
   final Function(User) updateUser;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
-  LoginPage({Key? key, required this.user, required this.updateUser}) : super(key: key);
+  LoginPage({Key? key, required this.user, required this.updateUser})
+      : super(key: key);
 
-  Widget popup(BuildContext context) {
+  Widget popup(BuildContext context, String msg) {
     return AlertDialog(
       title: Text(
-        "Please do not leave the username or the password blank",
+        msg,
         style: Theme.of(context).textTheme.bodyMedium,
       ),
       actions: [
@@ -60,19 +61,25 @@ class LoginPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 80),
                 CoolButton(
-                      handler: () async {
-                        if (usernameController.text == '' ||
+                    handler: () {
+                      if (usernameController.text == '' ||
                           passwordController.text == '') {
                         // popup
                         showDialog(
                             context: context,
-                            builder: (BuildContext context) => popup(context));
+                            builder: (BuildContext context) => popup(context,
+                                "Please do not leave the username or the password blank"));
                       } else {
-                        // TODO: implement login here
-                        http.Response response = await authenticate(
-                                usernameController.text,
+                        authenticate(usernameController.text,
                                 passwordController.text)
                             .then((res) {
+                          if (res.statusCode != 200) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) => popup(
+                                    context, "Incorrect Username or password"));
+                            return null;
+                          }
                           Map<String, dynamic> json = jsonDecode(res.body);
                           print(json['username']);
                           print(json['password']);
@@ -80,25 +87,26 @@ class LoginPage extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MyHomePage(
-                                      user: user,
-                                      updateUser: updateUser)));
-                          return res;
+                                      user: user, updateUser: updateUser)));
                         });
                       }
                     },
                     text: "Log in"),
-                const SizedBox(height: 35,),
+                const SizedBox(
+                  height: 35,
+                ),
                 const Text("New user?"),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 CoolButton(
                     text: "Sign Up",
-                    handler: (){
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => SignupPage()
-                      ));
-
-                    }
-                )
+                    handler: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignupPage()));
+                    })
               ],
             )));
   }

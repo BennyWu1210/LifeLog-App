@@ -63,20 +63,32 @@ class SignupPage extends StatelessWidget {
                         // popup
                         showDialog(
                             context: context,
-                            builder: (BuildContext context) => popup(context, "Please do not leave the username or the password blank"));
-                      }
-                      else if (passwordController.text.length < 6){
+                            builder: (BuildContext context) => popup(context,
+                                "Please do not leave the username or the password blank"));
+                      } else if (passwordController.text.length < 6) {
                         showDialog(
                             context: context,
-                            builder: (BuildContext context) => popup(context, "Please choose a password that has more than 6 characters"));
-                      }
-                      else {
-
+                            builder: (BuildContext context) => popup(context,
+                                "Please choose a password that has more than 6 characters"));
+                      } else {
+                        signup(usernameController.text, passwordController.text)
+                            .then((res) {
+                          if (res.statusCode != 200) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    popup(context, "Username already taken"));
+                            return null;
+                          } else {
+                            Navigator.pop(context);
+                          }
+                        });
                       }
                     },
                     text: "Sign Up"),
-                const SizedBox(height: 20,),
-
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             )));
   }

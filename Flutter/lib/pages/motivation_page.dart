@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:journal_app/style/style.dart';
 import 'package:journal_app/utilities/input.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MotivationPage extends StatefulWidget {
   MotivationPage({super.key});

@@ -36,8 +36,12 @@ class User {
     return "name: $username, hash: $_passwordHash, salt: $_salt, imgPath: $profilePicturePath";
   }
 
-  String hash(){
+  String getHash(){
     return _passwordHash;
+  }
+
+  String getSalt(){
+    return _salt;
   }
 
   String _hashPassword(String password, String salt) {

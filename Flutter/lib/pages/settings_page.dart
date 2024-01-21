@@ -14,6 +14,10 @@ class SettingsPage extends StatelessWidget {
 
   final String image_url = "assets/images/sample_profile.jpg";
 
+  void syncWithCloud() {
+    // TODO
+  }
+
   SettingsPage({super.key, required this.user, required this.updateUser});
 
   @override
@@ -124,7 +128,7 @@ class SettingsPage extends StatelessWidget {
                     )
                   ]),
                 )),
-            Text(user.hash()), // WHAT IS THIS FOR?
+            Text(user.getHash()), // WHAT IS THIS FOR?
             const SizedBox(
               height: 50,
             ),
