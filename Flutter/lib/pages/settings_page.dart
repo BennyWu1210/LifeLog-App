@@ -119,10 +119,7 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Log Out",
                         bolded: true,
-                        builder: (context) => SettingsPage(
-                              user: user,
-                              updateUser: updateUser,
-                            )),
+                        builder: (context) => const Placeholder()),
                     const SizedBox(
                       height: 15,
                     )
@@ -148,7 +145,7 @@ class SettingsPage extends StatelessWidget {
 
 class SettingsItem extends StatelessWidget {
   final String title;
-  final bool bolded;
+  final bool bolded; // which implies logout lol
   final Widget Function(BuildContext) builder;
 
   const SettingsItem(
@@ -161,8 +158,9 @@ class SettingsItem extends StatelessWidget {
   @override
   Widget build(context) {
     return GestureDetector(
-        onTap: () =>
-            Navigator.push(context, MaterialPageRoute(builder: builder)),
+        onTap: () => !bolded
+            ? Navigator.push(context, MaterialPageRoute(builder: builder))
+            : Navigator.pop(context),
         child: Container(
           color: poopoo,
           padding: const EdgeInsets.fromLTRB(25, 5, 0, 0),

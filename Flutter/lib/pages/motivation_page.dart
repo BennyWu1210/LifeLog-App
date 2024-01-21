@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:journal_app/style/style.dart';
@@ -14,9 +15,13 @@ class MotivationPage extends StatefulWidget {
 
 class _MotivationPageState extends State<MotivationPage> {
   String _quote = 'Press the button to generate a motivational quote!';
+  bool loading = false;
 
   Future<void> _generateQuote() async {
     const String apiUrl = 'http://localhost:8080/generate-quote';
+    setState(() {
+      loading = true;
+    });
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: {
@@ -32,6 +37,7 @@ class _MotivationPageState extends State<MotivationPage> {
       final data = jsonDecode(response.body);
       setState(() {
         _quote = data['quote'];
+        loading = false;
       });
     } else {
       setState(() {
@@ -53,7 +59,7 @@ class _MotivationPageState extends State<MotivationPage> {
         ),
         body: Column(
           children: [
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Container(
@@ -64,13 +70,21 @@ class _MotivationPageState extends State<MotivationPage> {
                   ),
                   child: Padding(
                       padding: const EdgeInsets.all(30),
-                      child: Text(
-                        _quote,
-                        style: const TextStyle(
-                            fontSize: 18,
-                            color: dark,
-                            fontWeight: FontWeight.w400),
-                      ))),
+                      child: loading
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 148,
+                                  horizontal:
+                                      0.26 * MediaQuery.of(context).size.width),
+                              child: const CircularProgressIndicator(),
+                            )
+                          : Text(
+                              _quote,
+                              style: const TextStyle(
+                                  fontSize: 18,
+                                  color: dark,
+                                  fontWeight: FontWeight.w400),
+                            ))),
             ),
             const SizedBox(
               height: 40,

@@ -77,18 +77,24 @@ class LoginPage extends StatelessWidget {
                             print(res.body);
                             showDialog(
                                 context: context,
-                                builder: (BuildContext context) => popup(
-                                    context, res.body));
-                            return null;
+                                builder: (BuildContext context) =>
+                                    popup(context, res.body));
+                            return;
                           }
+
                           Map<String, dynamic> json = jsonDecode(res.body);
                           print(json['username']);
                           print(json['password']);
+
+                          print(json);
+                          User user = User.fromJson(json['user']);
+                          print(user);
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MyHomePage(
-                                      user: user, updateUser: updateUser)));
+                                      user: User(json['user'].username, json['user'].pas), updateUser: updateUser)));
                         });
                       }
                     },

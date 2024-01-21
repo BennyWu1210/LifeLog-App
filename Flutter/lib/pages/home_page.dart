@@ -48,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void loadJournalsAndGoals() async {
     journalList = await readJournals();
     goalList = await readGoals();
+
     setState(() {});
   }
 

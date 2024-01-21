@@ -5,8 +5,8 @@ import '../utilities/user_data.dart';
 
 import '../utilities/user_data.dart';
 
-// const backendURL = "localhost:8080"; // IOS emulator
-const backendURL = "10.0.2.2:8080"; // Android emulator
+const backendURL = "localhost:8080"; // IOS emulator
+// const backendURL = "10.0.2.2:8080"; // Android emulator
 Future<void> backendGet() async {
   /*
   function for testing only
@@ -42,6 +42,8 @@ Future<http.Response> authenticate(String username, String password) async {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(
-          <String, String>{'inputUsername': username, 'inputPassword': password}));
+      body: jsonEncode(<String, String>{
+        'inputUsername': username,
+        'inputPassword': password
+      }));
 }
