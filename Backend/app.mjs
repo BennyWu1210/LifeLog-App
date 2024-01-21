@@ -73,6 +73,13 @@ app.post("/signup", async (req, res) => {
       res.status(500).send('An error occurred');
       console.log(err);
     });
+
+
+    // debug
+    console.log("############ signup ###############")
+    User.find().then(result=>{
+      console.log(result);
+    });
     
 
   } catch (err) {
@@ -85,6 +92,8 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { inputUsername, inputPassword } = req.body;
+
+    console.log("######## login ########\n" + inputUsername + " " + inputPassword);
 
     // Find user by username
     const user = await User.findOne({ username: inputUsername });
@@ -101,7 +110,7 @@ app.post("/login", async (req, res) => {
 
     res.send(user);
 
-    console.log("username: " + username);
+    console.log("username: " + inputUsername);
   } catch (err) {
     console.log(err);
     res.status(500).send('An error occurred');

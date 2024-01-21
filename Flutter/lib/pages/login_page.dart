@@ -74,10 +74,11 @@ class LoginPage extends StatelessWidget {
                                 passwordController.text)
                             .then((res) {
                           if (res.statusCode != 200) {
+                            print(res.body);
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) => popup(
-                                    context, "Incorrect Username or password"));
+                                    context, res.body));
                             return null;
                           }
                           Map<String, dynamic> json = jsonDecode(res.body);
