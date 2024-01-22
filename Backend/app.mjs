@@ -118,6 +118,30 @@ app.post("/login", async (req, res) => {
 });
 
 
+// NEED TO CHECK ACCURACY - NOT TESTED YET
+app.post("/update-user", async (req, res) => {
+  
+  try {
+    const userId = req.params.id; // Get the user ID from the URL
+
+    // Update the user in the database
+    const user = await User.findByIdAndUpdate(userId, updateData, {
+      new: true, // Return the updated document
+      runValidators: true, // Ensure the update adheres to the schema
+    });
+
+    // If no user is found with the given ID
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    // Send the updated user back
+    res.send(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('An error occurred');
+  }
+});
 
 app.post("/journal", (req, res) => {
   console.log(req.body);
