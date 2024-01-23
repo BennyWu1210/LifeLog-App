@@ -14,23 +14,25 @@ Future<String> get _localPath async {
 ----------- Journals Storage --------------
  */
 
-Future<File> get _localJournalFile async {
+Future<File> _localJournalFile(int userId) async {
   final path = await _localPath;
-  return File('$path/journals.json');
+  return File('$path/${userId}_journals.json');
 }
 
-Future<File> writeJournals(List<Journal> jList) async {
-  final file = await _localJournalFile;
+Future<File> writeJournals(List<Journal> jList, int userId,
+    {bool overwrite = false}) async {
+  final file = await _localJournalFile(userId);
   final List<Map<String, dynamic>> jsonList = [];
   for (Journal j in jList) {
     jsonList.add(j.toJson());
   }
+  // if (overwrite && await file.exists()) file.delete();
   return file.writeAsString(jsonEncode(jsonList));
 }
 
-Future<List<Journal>> readJournals() async {
+Future<List<Journal>> readJournals(int userId) async {
   try {
-    final file = await _localJournalFile;
+    final file = await _localJournalFile(userId);
 
     // Read the file
     String contents = await file.readAsString();
@@ -55,19 +57,20 @@ Future<List<Journal>> readJournals() async {
 ----------------- User data storage --------------------
  */
 
-Future<File> get _localUserFile async {
+Future<File> _localUserFile(int userId) async {
   final path = await _localPath;
-  return File("$path/userdata.json");
+  return File("$path/${userId}_userdata.json");
 }
 
-Future<File> writeUser(User u) async {
-  final file = await _localUserFile;
+Future<File> writeUser(User u, int userId, {bool overwrite = false}) async {
+  final file = await _localUserFile(userId);
+  // if (overwrite && await file.exists()) file.delete();
   return file.writeAsString(jsonEncode(u.toJson()));
 }
 
-Future<User> readUser() async {
+Future<User> readUser(int userId) async {
   try {
-    final file = await _localUserFile;
+    final file = await _localUserFile(userId);
 
     // Read the file
     String contents = await file.readAsString();
@@ -89,23 +92,24 @@ Future<User> readUser() async {
 --------------  Goals Data Storage  -----------------
  */
 
-Future<File> get _localGoalsFile async {
+Future<File> _localGoalsFile(int userID) async {
   final path = await _localPath;
-  return File('$path/goals.json');
+  return File('$path/${userID}_goals.json');
 }
 
-void writeGoals(List<Goal> gl) async {
-  final file = await _localGoalsFile;
+void writeGoals(List<Goal> gl, int userID, {bool overwrite = false}) async {
+  final file = await _localGoalsFile(userID);
   final List<Map<String, dynamic>> jsonList = [];
   for (Goal g in gl) {
     jsonList.add(g.toJson());
   }
+  // if (overwrite && await file.exists()) file.delete();
   file.writeAsString(jsonEncode(jsonList));
 }
 
-Future<List<Goal>> readGoals() async {
+Future<List<Goal>> readGoals(int userID) async {
   try {
-    final file = await _localGoalsFile;
+    final file = await _localGoalsFile(userID);
     String contents = await file.readAsString();
     final data = jsonDecode(contents) as List;
     List<Goal> goals = data.map((item) => Goal.fromJson(item)).toList();

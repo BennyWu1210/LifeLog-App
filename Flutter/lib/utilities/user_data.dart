@@ -9,12 +9,11 @@ class User {
   late int userid;
   late String _passwordHash;
   late String _salt;
-  String? profilePicturePath;
+  late String profilePicturePath;
   // TODO: refactor journal and goals here
 
-  User(this.username,
-      String password,
-      {this.profilePicturePath}) {
+  User(this.username, String password) {
+    profilePicturePath = "";
     var rng = Random.secure();
     var saltBytes = List<int>.generate(16, (_) => rng.nextInt(256));
     _salt = base64Encode(saltBytes);
@@ -22,9 +21,11 @@ class User {
     userid = username.hashCode; // TODO: Implement an actual user id system
   }
 
+  User.fullInfo(this.username, this.userid, this._passwordHash, this._salt,
+      {this.profilePicturePath = ""});
+
   ImageProvider get profilePicture {
-    print("PFP PATH INIT");
-    if (profilePicturePath == null) {
+    if (profilePicturePath == null || profilePicturePath == "") {
       return AssetImage("assets/images/sample_profile.jpg");
     } else {
       return FileImage(File(profilePicturePath!));
@@ -36,12 +37,19 @@ class User {
     return "name: $username, hash: $_passwordHash, salt: $_salt, imgPath: $profilePicturePath";
   }
 
-  String getHash(){
+  String getHash() {
     return _passwordHash;
   }
 
-  String getSalt(){
+  String getSalt() {
     return _salt;
+  }
+
+  void changePassword(String password) {
+    var rng = Random.secure();
+    var saltBytes = List<int>.generate(16, (_) => rng.nextInt(256));
+    _salt = base64Encode(saltBytes);
+    _passwordHash = _hashPassword(password, _salt);
   }
 
   String _hashPassword(String password, String salt) {
@@ -55,7 +63,7 @@ class User {
     return hash == _passwordHash;
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
       'username': username,
       'hash': _passwordHash,
@@ -72,10 +80,8 @@ class User {
     return user;
   }
 
-  factory User.empty(){
+  factory User.empty() {
     User blank = User("", "");
     return blank;
   }
-
-
 }

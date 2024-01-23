@@ -5,18 +5,19 @@ import 'package:flutter/services.dart';
 import 'package:journal_app/pages/home_page.dart';
 import 'package:journal_app/pages/signup_page.dart';
 import 'package:journal_app/style/style.dart';
+import 'package:journal_app/utilities/goal_template.dart';
 import 'package:journal_app/utilities/input.dart';
 import 'package:journal_app/backend/backend.dart';
+import 'package:journal_app/utilities/journal_template.dart';
+import 'package:journal_app/utilities/local_storage.dart';
 import '../utilities/user_data.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatelessWidget {
-  final User user;
   final Function(User) updateUser;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
-  LoginPage({Key? key, required this.user, required this.updateUser})
-      : super(key: key);
+  LoginPage({Key? key, required this.updateUser}) : super(key: key);
 
   Widget popup(BuildContext context, String msg) {
     return AlertDialog(
@@ -83,18 +84,53 @@ class LoginPage extends StatelessWidget {
                           }
 
                           Map<String, dynamic> json = jsonDecode(res.body);
-                          print(json['username']);
-                          print(json['password']);
 
-                          print(json);
-                          User user = User.fromJson(json['user']);
-                          print(user);
+                          // overwrite local file with data from cloud
+                          List<Goal> listOfGoals = [];
+                          List<Journal> listOfJournal = [];
+                          User user;
+
+                          // fill goals
+                          for (var goal in json['user']['goals']) {
+                            if (goal['kind'] == 'ProgressType') {
+                              listOfGoals.add(ProgressGoal(
+                                  title: goal['title'],
+                                  current: goal['current'],
+                                  total: goal['total']));
+                            } else {
+                              listOfGoals.add(TodoGoal(
+                                  title: goal['title'],
+                                  state: goal['completed']));
+                            }
+                          }
+
+                          // fill journals
+                          for (var journal in json['user']['journals']) {
+                            listOfJournal.add(Journal(
+                                title: journal['title'],
+                                content: journal['body'],
+                                time: DateTime.parse(journal['createdAt'])));
+                          }
+
+                          // set user
+                          user = User.fullInfo(
+                              json['user']['username'],
+                              json['user']["id"],
+                              json['user']["hash"],
+                              json['user']["salt"],
+                              profilePicturePath: "");
+
+                          // overwrite stuff
+                          writeGoals(listOfGoals, user.userid, overwrite: true);
+                          writeJournals(listOfJournal, user.userid,
+                              overwrite: true);
+                          writeUser(user, user.userid, overwrite: true);
 
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MyHomePage(
-                                      user: User(json['user'].username, json['user'].pas), updateUser: updateUser)));
+                                      user: user, updateUser: updateUser)));
                         });
                       }
                     },

@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:journal_app/app.dart';
 import 'package:journal_app/pages/settings_subpages.dart';
 import 'package:journal_app/style/style.dart';
+import 'package:journal_app/utilities/goal_template.dart';
 import 'package:journal_app/utilities/input.dart';
+import 'package:journal_app/utilities/journal_template.dart';
 
 import '../utilities/user_data.dart';
 
 class SettingsPage extends StatelessWidget {
   User user;
   final Function(User) updateUser;
+  final dynamic Function() syncWithCloud;
 
   // This should take in a user instance
   //String username = "Benny_Wu123";
 
   final String image_url = "assets/images/sample_profile.jpg";
 
-  void syncWithCloud() {
-    // TODO
-  }
-
-  SettingsPage({super.key, required this.user, required this.updateUser});
+  SettingsPage(
+      {super.key,
+      required this.user,
+      required this.updateUser,
+      required this.syncWithCloud});
 
   @override
   Widget build(context) {
@@ -133,8 +137,8 @@ class SettingsPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 50),
               child: CoolButton(
                   text: "Sync With Cloud",
-                  handler: () =>
-                      {}) // should trigger an update in "MyHomePage" that sends all local change to the cloud
+                  handler:
+                      syncWithCloud) // should trigger an update in "MyHomePage" that sends all local change to the cloud
               ,
             )
             // Text(user.profilePicturePath!) // Null value ??????????????????
@@ -160,7 +164,9 @@ class SettingsItem extends StatelessWidget {
     return GestureDetector(
         onTap: () => !bolded
             ? Navigator.push(context, MaterialPageRoute(builder: builder))
-            : Navigator.pop(context),
+            : Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const App()),
+                (Route<dynamic> route) => false),
         child: Container(
           color: poopoo,
           padding: const EdgeInsets.fromLTRB(25, 5, 0, 0),

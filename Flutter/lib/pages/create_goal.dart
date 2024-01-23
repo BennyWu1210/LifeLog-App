@@ -185,6 +185,8 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
               if (selectedGoalType == GoalType.progress) {
                 try {
                   int number = int.parse(totalNumberController.text);
+                  if (number <= 0) throw Exception("Cannot divide by 0");
+
                   widget.addGoalCallBack(ProgressGoal(
                       title: goalTitleController.text, total: number));
                   setState(() {});

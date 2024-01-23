@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:journal_app/pages/motivation_page.dart';
 import 'package:journal_app/utilities/goal_template.dart';
 import 'package:journal_app/utilities/goals_overview.dart';
 import 'package:journal_app/utilities/input.dart';
+import 'package:http/http.dart' as http;
 
 // Custom files
 import '../utilities/journal_template.dart';
@@ -46,8 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Goal> goalList = [];
 
   void loadJournalsAndGoals() async {
-    journalList = await readJournals();
-    goalList = await readGoals();
+    journalList = await readJournals(widget.user.userid);
+    goalList = await readGoals(widget.user.userid);
 
     setState(() {});
   }
@@ -76,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void addGoal(Goal g) {
     setState(() {
       goalList.add(g);
-      writeGoals(goalList);
+      writeGoals(goalList, widget.user.userid);
     });
   }
 
@@ -84,8 +86,27 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       g.state = !g.state;
       g.completed = g.state;
-      writeGoals(goalList);
+      writeGoals(goalList, widget.user.userid);
     });
+  }
+
+  void syncWithCloud(
+      User user, List<Goal> goals, List<Journal> journals) async {
+    String endpoint = 'http://localhost:8080/update-user';
+
+    http.post(Uri.parse(endpoint),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          "id": user.userid,
+          "username": user.username,
+          "hash": user.getHash(),
+          "salt": user.getSalt(),
+          "profilePicPath": user.profilePicturePath,
+          "journals": journals,
+          "goals": goals
+        }));
   }
 
   int countTodoGoals() {
@@ -122,14 +143,14 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       g.current = val;
       g.completed = g.current == g.total;
-      writeGoals(goalList);
+      writeGoals(goalList, widget.user.userid);
     });
   }
 
   void removeGoal(int idx) {
     setState(() {
       goalList.removeAt(idx);
-      writeGoals(goalList);
+      writeGoals(goalList, widget.user.userid);
     });
   }
 
@@ -137,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       journalList.add(j);
       journalDropdown.add(false);
-      writeJournals(journalList);
+      writeJournals(journalList, widget.user.userid);
     });
   }
 
@@ -145,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       journalList.removeAt(idx);
       journalDropdown.removeAt(idx);
-      writeJournals(journalList);
+      writeJournals(journalList, widget.user.userid);
     });
   }
 
@@ -199,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   left: 25,
                   right: 25), //vertical: 200, horizontal: 25
               child: FutureBuilder<List<Journal>>(
-                future: readJournals(),
+                future: readJournals(widget.user.userid),
                 builder: (BuildContext context,
                     AsyncSnapshot<List<Journal>> snapshot) {
                   // if (snapshot.connectionState == ConnectionState.waiting) {
@@ -361,8 +382,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => SettingsPage(
-                                  user: widget.user,
-                                  updateUser: widget.updateUser)));
+                                    user: widget.user,
+                                    updateUser: widget.updateUser,
+                                    syncWithCloud: () => syncWithCloud(
+                                        widget.user, goalList, journalList),
+                                  )));
                     },
                     tooltip: 'Settings',
                     icon: const Icon(

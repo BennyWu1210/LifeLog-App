@@ -11,12 +11,14 @@ class ProfilePicturePage extends StatelessWidget {
   final User user;
   final Function(User) updateUser;
 
-  const ProfilePicturePage({Key? key, required this.user, required this.updateUser}) : super(key: key);
+  const ProfilePicturePage(
+      {Key? key, required this.user, required this.updateUser})
+      : super(key: key);
 
   Future imgPicker() async {
     try {
       final img = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (img == null){
+      if (img == null) {
         return;
       }
       final File imgFile = File(img.path); // cast XFile to File
@@ -24,8 +26,7 @@ class ProfilePicturePage extends StatelessWidget {
       newUser.profilePicturePath = imgFile.path;
       updateUser(newUser);
       print("---------- Imgpicker ---------------");
-    }
-    on PlatformException catch(e) {
+    } on PlatformException catch (e) {
       print("---------- IMGPICKER ERROR ---------------");
       print(e);
     }
@@ -51,22 +52,19 @@ class ProfilePicturePage extends StatelessWidget {
                 addButton(() {
                   imgPicker();
                   Navigator.pop(context);
-
                 })
               ],
             )));
   }
 }
 
-
-
 class UsernamePage extends StatelessWidget {
-
   final User user;
   final usernameController = TextEditingController();
   final Function updateUser;
 
-  UsernamePage({Key? key, required this.user, required this.updateUser}) : super(key: key);
+  UsernamePage({Key? key, required this.user, required this.updateUser})
+      : super(key: key);
 
   @override
   Widget build(context) {
@@ -87,33 +85,29 @@ class UsernamePage extends StatelessWidget {
                 Text("Please input new username"),
                 SizedBox(height: 5),
                 TextFormField(
-                  decoration: InputDecoration(
-                      hintText: "Your Username"
-                  ),
+                  decoration: InputDecoration(hintText: "Your Username"),
                   controller: usernameController,
-
                 ),
                 SizedBox(height: 20),
-                CoolButton(handler: (){
-                  newUser = user;
-                  newUser.username = usernameController.text;
-                  updateUser(newUser);
-                  Navigator.pop(context);
-                }, text: "Update")
+                CoolButton(
+                    handler: () {
+                      user.username = usernameController.text;
+                      updateUser(user);
+                      Navigator.pop(context);
+                    },
+                    text: "Update")
               ],
             )));
   }
 }
 
-
-
 class PasswordPage extends StatelessWidget {
-
   final User user;
   final passwordController = TextEditingController();
   final Function updateUser;
 
-  PasswordPage({Key? key, required this.user, required this.updateUser}) : super(key: key);
+  PasswordPage({Key? key, required this.user, required this.updateUser})
+      : super(key: key);
 
   @override
   Widget build(context) {
@@ -135,18 +129,17 @@ class PasswordPage extends StatelessWidget {
                 SizedBox(height: 5),
                 TextFormField(
                   obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: "Your Password"
-                    ),
+                  decoration: InputDecoration(hintText: "Your Password"),
                   controller: passwordController,
-
                 ),
                 SizedBox(height: 20),
-                CoolButton(handler: (){
-                  newUser = User(user.username, passwordController.text, profilePicturePath: user.profilePicturePath);
-                  updateUser(newUser);
-                  Navigator.pop(context);
-                }, text: "Update")
+                CoolButton(
+                    handler: () {
+                      user.changePassword(passwordController.text);
+                      updateUser(user);
+                      Navigator.pop(context);
+                    },
+                    text: "Update")
               ],
             )));
   }

@@ -65,7 +65,7 @@ app.post("/signup", async (req, res) => {
       return res.status(409).send('Username already exists'); // 409 Conflict
     }
     // Store the user in the database
-    const newUser = await User({ id: Math.random() * 3000, username: username, hash: hash, salt: salt, profilePicPath: "", journals: [], goals: []});
+    const newUser = await User({ id: Math.floor(Math.random() * 3000), username: username, hash: hash, salt: salt, profilePicPath: "", journals: [], goals: []});
     newUser.save().then(result => {
       res.send(result);
     })
@@ -122,21 +122,43 @@ app.post("/login", async (req, res) => {
 app.post("/update-user", async (req, res) => {
   
   try {
-    const userId = req.params.id; // Get the user ID from the URL
-
+    const updateData = req.body;
     // Update the user in the database
-    const user = await User.findByIdAndUpdate(userId, updateData, {
-      new: true, // Return the updated document
-      runValidators: true, // Ensure the update adheres to the schema
-    });
 
-    // If no user is found with the given ID
-    if (!user) {
-      return res.status(404).send('User not found');
+    console.log(updateData)
+    // Send the updated user back
+    const journals = [];
+    const goals = [];
+
+    for (const journal of updateData.journals) {
+      journals.push(Journal({title: journal.title, body: journal.content}));
     }
 
-    // Send the updated user back
-    res.send(user);
+    for (const goal of updateData.goals) {
+      if (goal.type === 'progress') {
+        goals.push(Goal({
+          title: goal.title, 
+          kind: 'ProgressType',
+          current: goal.current,
+          total: goal.total,
+        }));
+      } 
+      else {
+        goals.push(Goal({
+          title: goal.title, 
+          kind: 'TodoType',
+          completed: goal.completed
+        }));
+      }
+    }
+
+    const user =  User({ id: updateData.id, username: updateData.username, hash: updateData.hash, 
+      salt: updateData.salt, profilePicPath: updateData.profilePicturePath, 
+      journals: journals, goals: goals});
+    
+    await User.deleteOne({username: updateData.username});
+    user.save().then(result => res.send(result)).then(console.log("SUCCESS"));
+    
   } catch (err) {
     console.error(err);
     res.status(500).send('An error occurred');

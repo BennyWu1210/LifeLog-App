@@ -6,13 +6,15 @@ import '../style/style.dart';
 Widget progressBar(ProgressGoal goal) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(160, 11, 40, 0),
-    child: LinearProgressIndicator(
-      minHeight: 5,
-      borderRadius: BorderRadius.circular(100),
-      color: darkgreen,
-      backgroundColor: Colors.white.withOpacity(0.85),
-      value: goal.current.toDouble() / goal.total,
-    ),
+    child: goal.total != 0
+        ? LinearProgressIndicator(
+            minHeight: 5,
+            borderRadius: BorderRadius.circular(100),
+            color: darkgreen,
+            backgroundColor: Colors.white.withOpacity(0.85),
+            value: goal.current.toDouble() / goal.total,
+          )
+        : const Text("Error: Cannot divide by 0"),
   );
 }
 
@@ -51,9 +53,9 @@ class GoalsOverview extends StatelessWidget {
       required this.removeGoal,
       required this.toggleGoal,
       required this.changeValGoal,
-        required this.todoCount,
-        required this.progressCount,
-        required this.completedCount})
+      required this.todoCount,
+      required this.progressCount,
+      required this.completedCount})
       : super(key: key);
 
   @override
