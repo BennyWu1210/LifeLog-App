@@ -11,7 +11,7 @@ import '../utilities/user_data.dart';
 class SettingsPage extends StatelessWidget {
   User user;
   final Function(User) updateUser;
-  final Function(int) updatePrefs;
+  final Function() removePrefs;
   final dynamic Function() syncWithCloud;
 
   // This should take in a user instance
@@ -24,8 +24,7 @@ class SettingsPage extends StatelessWidget {
       required this.user,
       required this.updateUser,
       required this.syncWithCloud,
-      required this.updatePrefs
-      });
+      required this.removePrefs});
 
   @override
   Widget build(context) {
@@ -126,7 +125,8 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Log Out",
                         bolded: true,
-                        builder: (context) => const Placeholder()),
+                        builder: (context) => const Placeholder(),
+                        removePrefs: removePrefs),
                     const SizedBox(
                       height: 15,
                     )
@@ -154,14 +154,14 @@ class SettingsItem extends StatelessWidget {
   final String title;
   final bool bolded; // which implies logout lol
   final Widget Function(BuildContext) builder;
-  final Widget Function(int)? updatePrefs;
+  final Function()? removePrefs;
 
   const SettingsItem(
       {Key? key,
       required this.title,
       required this.builder,
       required this.bolded,
-      this.updatePrefs})
+      this.removePrefs})
       : super(key: key);
 
   @override
@@ -170,14 +170,13 @@ class SettingsItem extends StatelessWidget {
         onTap: () {
           if (!bolded) {
             Navigator.push(context, MaterialPageRoute(builder: builder));
-          }
-          else {
+          } else {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (context) => const App(loadingStatePreset: 1,)),
-                    (Route<dynamic> route) => false);
+                MaterialPageRoute(builder: (context) => const App()),
+                (Route<dynamic> route) => false);
             print("a");
-            updatePrefs // cannot pass function in from above
+            removePrefs!(); // definitely good practice
+            // cannot pass function in from above
           }
         },
         child: Container(

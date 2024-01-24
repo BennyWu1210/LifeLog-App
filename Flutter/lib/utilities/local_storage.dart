@@ -6,8 +6,6 @@ import 'dart:io';
 import 'goal_template.dart';
 import 'journal_template.dart';
 
-
-
 Future<String> get _localPath async {
   final directory = await getApplicationDocumentsDirectory();
   return directory.path;
@@ -16,7 +14,6 @@ Future<String> get _localPath async {
 Future<SharedPreferences> getLoginState() async {
   return SharedPreferences.getInstance();
 }
-
 
 /*
 ----------- Journals Storage --------------
@@ -44,6 +41,9 @@ Future<List<Journal>> readJournals(int userId) async {
 
     // Read the file
     String contents = await file.readAsString();
+
+    print("content");
+    print(contents);
 
     // Decode the string to a list of maps
     final data = jsonDecode(contents) as List;

@@ -43,6 +43,7 @@ class _GoalPageState extends State<GoalPage> {
 
   @override
   void initState() {
+    super.initState();
     _updateGoalLists();
   }
 

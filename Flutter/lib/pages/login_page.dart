@@ -16,9 +16,15 @@ import 'package:http/http.dart' as http;
 class LoginPage extends StatelessWidget {
   final Function(User) updateUser;
   final Function(int) updatePrefs;
+  final Function() removePrefs;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
-  LoginPage({Key? key, required this.updateUser, required this.updatePrefs}) : super(key: key);
+  LoginPage(
+      {Key? key,
+      required this.updateUser,
+      required this.updatePrefs,
+      required this.removePrefs})
+      : super(key: key);
 
   Widget popup(BuildContext context, String msg) {
     return AlertDialog(
@@ -134,9 +140,12 @@ class LoginPage extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => MyHomePage(
-                                      user: user, updateUser: updateUser, updatePrefs: updatePrefs,)));
+                                        user: user,
+                                        updateUser: updateUser,
+                                        updatePrefs: updatePrefs,
+                                        removePrefs: removePrefs,
+                                      )));
                         });
-
                       }
                     },
                     text: "Log in"),

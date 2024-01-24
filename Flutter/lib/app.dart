@@ -7,10 +7,9 @@ import 'package:journal_app/utilities/local_storage.dart';
 import 'package:journal_app/utilities/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class App extends StatefulWidget {
   final int loadingStatePreset;
-  const App({super.key, required this.loadingStatePreset});
+  const App({super.key, this.loadingStatePreset = -1});
 
   @override
   State<App> createState() => _AppState();
@@ -44,13 +43,21 @@ class _AppState extends State<App> {
   void loadPrefsAndUser() async {
     prefs = await getLoginState();
     loadingState = 0;
-    int? id = prefs.getInt('id');
-    if (id == null) {
+    setState(() {});
+
+    if (!prefs.containsKey("id")) {
       loadingState = 1;
       setState(() {});
       return;
     }
-    user = await readUser(id);
+
+    int id = prefs.getInt('id') as int; // guaranteed to exist
+    user = await readUser(id).then(
+      (value) {
+        value.userid = id;
+        return value;
+      },
+    );
     loadingState = 2;
     setState(() {});
   }
@@ -68,12 +75,14 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    if (loadingState == 1){
+    loadPrefsAndUser();
+    if (loadingState == 1) {
+      print("HEH");
       return;
     }
     loadingState = -1;
-    loadPrefsAndUser();
-
+    setState(() {});
+    print("APP: INIT STATE");
   }
 
   Future<void> updateUserInfo(User u) async {
@@ -87,6 +96,10 @@ class _AppState extends State<App> {
 
   void updatePrefs(int id) {
     prefs.setInt('id', id);
+  }
+
+  void removePrefs() {
+    prefs.remove('id');
   }
 
   @override
@@ -105,9 +118,16 @@ class _AppState extends State<App> {
     //     });
     switch (loadingState) {
       case (1):
-        return LoginPage(updateUser: updateUserInfo, updatePrefs: updatePrefs,);
-      case(2):
-        return MyHomePage(user: user, updateUser: updateUserInfo, updatePrefs: updatePrefs,);
+        return LoginPage(
+            updateUser: updateUserInfo,
+            updatePrefs: updatePrefs,
+            removePrefs: removePrefs);
+      case (2):
+        return MyHomePage(
+            user: user,
+            updateUser: updateUserInfo,
+            updatePrefs: updatePrefs,
+            removePrefs: removePrefs);
       default:
         return const CircularProgressIndicator();
     }

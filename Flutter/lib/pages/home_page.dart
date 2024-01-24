@@ -23,9 +23,15 @@ import '../pages/settings_page.dart';
 class MyHomePage extends StatefulWidget {
   final User user;
   final Function(int) updatePrefs;
+  final Function() removePrefs;
   final Function(User) updateUser;
 
-  const MyHomePage({super.key, required this.user, required this.updateUser, required this.updatePrefs});
+  const MyHomePage(
+      {super.key,
+      required this.user,
+      required this.updateUser,
+      required this.updatePrefs,
+      required this.removePrefs});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -52,7 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void loadJournalsAndGoals() async {
     journalList = await readJournals(widget.user.userid);
     goalList = await readGoals(widget.user.userid);
-
     setState(() {});
   }
 
@@ -387,7 +392,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     user: widget.user,
                                     updateUser: widget.updateUser,
                                     syncWithCloud: () => syncWithCloud(
-                                        widget.user, goalList, journalList), updatePrefs: widget.updatePrefs,
+                                        widget.user, goalList, journalList),
+                                    removePrefs: widget.removePrefs,
                                   )));
                     },
                     tooltip: 'Settings',
