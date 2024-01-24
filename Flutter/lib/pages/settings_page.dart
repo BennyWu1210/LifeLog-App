@@ -11,6 +11,7 @@ import '../utilities/user_data.dart';
 class SettingsPage extends StatelessWidget {
   User user;
   final Function(User) updateUser;
+  final Function(int) updatePrefs;
   final dynamic Function() syncWithCloud;
 
   // This should take in a user instance
@@ -22,7 +23,9 @@ class SettingsPage extends StatelessWidget {
       {super.key,
       required this.user,
       required this.updateUser,
-      required this.syncWithCloud});
+      required this.syncWithCloud,
+      required this.updatePrefs
+      });
 
   @override
   Widget build(context) {
@@ -151,22 +154,32 @@ class SettingsItem extends StatelessWidget {
   final String title;
   final bool bolded; // which implies logout lol
   final Widget Function(BuildContext) builder;
+  final Widget Function(int)? updatePrefs;
 
   const SettingsItem(
       {Key? key,
       required this.title,
       required this.builder,
-      required this.bolded})
+      required this.bolded,
+      this.updatePrefs})
       : super(key: key);
 
   @override
   Widget build(context) {
     return GestureDetector(
-        onTap: () => !bolded
-            ? Navigator.push(context, MaterialPageRoute(builder: builder))
-            : Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const App()),
-                (Route<dynamic> route) => false),
+        onTap: () {
+          if (!bolded) {
+            Navigator.push(context, MaterialPageRoute(builder: builder));
+          }
+          else {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => const App(loadingStatePreset: 1,)),
+                    (Route<dynamic> route) => false);
+            print("a");
+            updatePrefs
+          }
+        },
         child: Container(
           color: poopoo,
           padding: const EdgeInsets.fromLTRB(25, 5, 0, 0),

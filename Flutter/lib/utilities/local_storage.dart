@@ -1,14 +1,22 @@
 import 'dart:convert';
 import 'package:journal_app/utilities/user_data.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'goal_template.dart';
 import 'journal_template.dart';
+
+
 
 Future<String> get _localPath async {
   final directory = await getApplicationDocumentsDirectory();
   return directory.path;
 }
+
+Future<SharedPreferences> getLoginState() async {
+  return SharedPreferences.getInstance();
+}
+
 
 /*
 ----------- Journals Storage --------------

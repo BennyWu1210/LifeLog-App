@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: lightTheme,
-      home: const App(),
+      home: const App(loadingStatePreset: -1,),
     );
   }
 }

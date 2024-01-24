@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:journal_app/backend/backend.dart';
 import 'package:journal_app/style/style.dart';
 import 'package:journal_app/utilities/input.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +19,7 @@ class _MotivationPageState extends State<MotivationPage> {
   bool loading = false;
 
   Future<void> _generateQuote() async {
-    const String apiUrl = 'http://localhost:8080/generate-quote';
+    const String apiUrl = 'http://$backendURL/generate-quote';
     setState(() {
       loading = true;
     });
