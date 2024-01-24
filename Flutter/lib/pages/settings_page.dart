@@ -177,7 +177,7 @@ class SettingsItem extends StatelessWidget {
                     builder: (context) => const App(loadingStatePreset: 1,)),
                     (Route<dynamic> route) => false);
             print("a");
-            updatePrefs
+            updatePrefs // cannot pass function in from above
           }
         },
         child: Container(

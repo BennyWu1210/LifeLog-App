@@ -20,6 +20,11 @@ class _AppState extends State<App> {
   // App variables
   late User user; // use empty user while the real user loads
   late SharedPreferences prefs;
+
+  /*
+  first time login: starts at main (loadingStatePreset = -1)
+  after logout: starts at login page (= 1)
+   */
   late int loadingState = widget.loadingStatePreset;
 
   /*
