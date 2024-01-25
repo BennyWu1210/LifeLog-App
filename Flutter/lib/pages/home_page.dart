@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void syncWithCloud(
       User user, List<Goal> goals, List<Journal> journals) async {
-    String endpoint = 'http://$backendURL/update-user';
+    String endpoint = 'https://$backendURL/update-user';
 
     http.post(Uri.parse(endpoint),
         headers: {

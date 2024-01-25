@@ -6,13 +6,14 @@ import '../utilities/user_data.dart';
 import '../utilities/user_data.dart';
 
 // const backendURL = "localhost:8080"; // IOS emulator
-const backendURL = "10.0.2.2:8080"; // Android emulator
+// const backendURL = "10.0.2.2:8080"; // Android emulator
+// replit test server
+const backendURL = "4e6e04bc-082c-43f8-9e5d-caf2a9bb9822-00-3ix3nr65afby1.picard.replit.dev";
 Future<void> backendGet() async {
   /*
   function for testing only
   */
-
-  final response = await http.get(Uri.parse('http://$backendURL/journal'));
+  final response = await http.get(Uri.parse('https://$backendURL/journal'));
   print("#########\n########## backendGet");
   if (response.statusCode == 200) {
     print('Response data: ${response.body}');
@@ -24,7 +25,7 @@ Future<void> backendGet() async {
 
 Future<http.Response> signup(String username, String password) async {
   User newUser = User(username, password);
-  return http.post(Uri.parse('http://$backendURL/signup'),
+  return http.post(Uri.parse('https://$backendURL/signup'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -38,7 +39,11 @@ Future<http.Response> signup(String username, String password) async {
 }
 
 Future<http.Response> authenticate(String username, String password) async {
-  return http.post(Uri.parse('http://$backendURL/login'),
+  print("RAAAAAAAAAAA");
+  print(backendURL);
+  final ping = await http.get(Uri.parse("https://" + backendURL + "/ping"));
+  print("Ping: " + ping.body);
+  return http.post(Uri.parse("https://" + backendURL + "/login"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

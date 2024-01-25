@@ -19,7 +19,7 @@ class _MotivationPageState extends State<MotivationPage> {
   bool loading = false;
 
   Future<void> _generateQuote() async {
-    const String apiUrl = 'http://$backendURL/generate-quote';
+    const String apiUrl = 'https://$backendURL/generate-quote';
     setState(() {
       loading = true;
     });

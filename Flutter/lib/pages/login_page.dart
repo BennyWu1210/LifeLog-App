@@ -70,6 +70,9 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 80),
                 CoolButton(
                     handler: () {
+                      // TODO: remove the below temp code
+
+
                       if (usernameController.text == '' ||
                           passwordController.text == '') {
                         // popup
@@ -82,11 +85,12 @@ class LoginPage extends StatelessWidget {
                                 passwordController.text)
                             .then((res) {
                           if (res.statusCode != 200) {
+                            print("Login response != 200");
                             print(res.body);
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                    popup(context, res.body));
+                                    popup(context, res.statusCode.toString()));
                             return;
                           }
 
