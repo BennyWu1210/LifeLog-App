@@ -90,7 +90,7 @@ class LoginPage extends StatelessWidget {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                    popup(context, res.statusCode.toString()));
+                                    popup(context, "${res.statusCode.toString()}\n${res.body}"));
                             return;
                           }
 
