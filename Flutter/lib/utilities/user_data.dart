@@ -26,7 +26,7 @@ class User {
 
   ImageProvider get profilePicture {
     if (profilePicturePath == null || profilePicturePath == "") {
-      return AssetImage("assets/images/sample_profile.jpg");
+      return const AssetImage("assets/images/sample_profile.png");
     } else {
       return FileImage(File(profilePicturePath!));
     }

@@ -17,7 +17,7 @@ class SettingsPage extends StatelessWidget {
   // This should take in a user instance
   //String username = "Benny_Wu123";
 
-  final String image_url = "assets/images/sample_profile.jpg";
+  final String image_url = "assets/images/sample_profile.png";
 
   SettingsPage(
       {super.key,
@@ -132,7 +132,6 @@ class SettingsPage extends StatelessWidget {
                     )
                   ]),
                 )),
-            Text(user.getHash()), // WHAT IS THIS FOR?
             const SizedBox(
               height: 50,
             ),
