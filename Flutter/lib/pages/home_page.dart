@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:journal_app/backend/backend.dart';
 import 'package:journal_app/pages/journal.dart';
 import 'package:intl/intl.dart';
 import 'package:journal_app/pages/motivation_page.dart';
@@ -21,9 +22,16 @@ import '../pages/settings_page.dart';
 
 class MyHomePage extends StatefulWidget {
   final User user;
+  final Function(int) updatePrefs;
+  final Function() removePrefs;
   final Function(User) updateUser;
 
-  const MyHomePage({super.key, required this.user, required this.updateUser});
+  const MyHomePage(
+      {super.key,
+      required this.user,
+      required this.updateUser,
+      required this.updatePrefs,
+      required this.removePrefs});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -50,7 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void loadJournalsAndGoals() async {
     journalList = await readJournals(widget.user.userid);
     goalList = await readGoals(widget.user.userid);
-
     setState(() {});
   }
 
@@ -92,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void syncWithCloud(
       User user, List<Goal> goals, List<Journal> journals) async {
-    String endpoint = 'http://localhost:8080/update-user';
+    String endpoint = 'http://$backendURL/update-user';
 
     http.post(Uri.parse(endpoint),
         headers: {
@@ -386,6 +393,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     updateUser: widget.updateUser,
                                     syncWithCloud: () => syncWithCloud(
                                         widget.user, goalList, journalList),
+                                    removePrefs: widget.removePrefs,
                                   )));
                     },
                     tooltip: 'Settings',

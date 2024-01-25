@@ -11,18 +11,20 @@ import '../utilities/user_data.dart';
 class SettingsPage extends StatelessWidget {
   User user;
   final Function(User) updateUser;
+  final Function() removePrefs;
   final dynamic Function() syncWithCloud;
 
   // This should take in a user instance
   //String username = "Benny_Wu123";
 
-  final String image_url = "assets/images/sample_profile.jpg";
+  final String image_url = "assets/images/sample_profile.png";
 
   SettingsPage(
       {super.key,
       required this.user,
       required this.updateUser,
-      required this.syncWithCloud});
+      required this.syncWithCloud,
+      required this.removePrefs});
 
   @override
   Widget build(context) {
@@ -123,13 +125,13 @@ class SettingsPage extends StatelessWidget {
                     SettingsItem(
                         title: "Log Out",
                         bolded: true,
-                        builder: (context) => const Placeholder()),
+                        builder: (context) => const Placeholder(),
+                        removePrefs: removePrefs),
                     const SizedBox(
                       height: 15,
                     )
                   ]),
                 )),
-            Text(user.getHash()), // WHAT IS THIS FOR?
             const SizedBox(
               height: 50,
             ),
@@ -151,22 +153,31 @@ class SettingsItem extends StatelessWidget {
   final String title;
   final bool bolded; // which implies logout lol
   final Widget Function(BuildContext) builder;
+  final Function()? removePrefs;
 
   const SettingsItem(
       {Key? key,
       required this.title,
       required this.builder,
-      required this.bolded})
+      required this.bolded,
+      this.removePrefs})
       : super(key: key);
 
   @override
   Widget build(context) {
     return GestureDetector(
-        onTap: () => !bolded
-            ? Navigator.push(context, MaterialPageRoute(builder: builder))
-            : Navigator.of(context).pushAndRemoveUntil(
+        onTap: () {
+          if (!bolded) {
+            Navigator.push(context, MaterialPageRoute(builder: builder));
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => const App()),
-                (Route<dynamic> route) => false),
+                (Route<dynamic> route) => false);
+            print("a");
+            removePrefs!(); // definitely good practice
+            // cannot pass function in from above
+          }
+        },
         child: Container(
           color: poopoo,
           padding: const EdgeInsets.fromLTRB(25, 5, 0, 0),
